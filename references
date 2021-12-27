@@ -1,2 +1,10 @@
-C++ Libraries
-https://www.bogotobogo.com/cplusplus/libraries.php
+C++ Libraries:
+    https://www.bogotobogo.com/cplusplus/libraries.php
+    https://www.geeksforgeeks.org/static-vs-dynamic-libraries/
+
+Neural Network (Back propagation and matrix pass)
+    http://neuralnetworksanddeeplearning.com/chap2.html
+    https://stackoverflow.com/questions/1380371/what-are-the-most-widely-used-c-vector-matrix-math-linear-algebra-libraries-a
+
+C++ Move Semantics:
+    https://mbevin.wordpress.com/2012/11/20/move-semantics/
