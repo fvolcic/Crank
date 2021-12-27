@@ -96,23 +96,6 @@ NeuralNetworkFF::NeuralNetworkFF(int num_layers, std::vector<int> &neuron_counts
             neurons[x][y].setWeights(weights[x][y]);
         }
     }
-    
-
-   /*
-    neurons.resize(num_layers); 
-    for(int i = 0; i < num_layers; ++i){
-        neurons[i].resize(neuron_counts[i]); 
-        for(int j = 0; j < neuron_counts[i]; ++j){
-
-            neurons[i][j].setBias(bias[i][j]); 
-
-            for(int k = 0; k < weights[i][j].size(); ++k){
-
-            }
-
-        }
-    }
-    */
 }
 
 NeuralNetworkFF::~NeuralNetworkFF(){}
