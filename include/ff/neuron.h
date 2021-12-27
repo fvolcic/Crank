@@ -65,7 +65,13 @@ public:
      * @brief get the output of a neuron after the activation function has been applied
      * 
      */
-    void getOutput(); 
+    double getOutput(); 
+
+    /**
+     * @brief Manually set the output value of a neuron
+     * 
+     */
+    void setOutput(double output); 
 
 private:
     ActivationBase *activationBase; // The base class for the activation function
