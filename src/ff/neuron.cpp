@@ -58,3 +58,35 @@ double Neuron::getOutput()
 void Neuron::setOutput(double output){
     activation = output; 
 }
+
+void Neuron::setBias(double bias){
+    this->bias = bias;
+}
+
+void Neuron::setWeights(std::vector<double> weights){
+    this->weights = weights;
+}
+
+void Neuron::setActivation(double activation){
+    this->activation = activation;
+}
+
+void Neuron::setActivationBase(ActivationBase *activationFunc){
+    activationBase = activationFunc;
+}
+
+double Neuron::getBias(){
+    return bias;
+}
+
+std::vector<double> Neuron::getWeights(){
+    return weights;
+}
+
+double Neuron::getActivation(){
+    return activation;
+}
+
+ActivationBase * Neuron::getActivationFunction(){
+    return activationBase;
+}

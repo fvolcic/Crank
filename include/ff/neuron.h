@@ -73,6 +73,62 @@ public:
      */
     void setOutput(double output); 
 
+    /**
+     * @brief Set the Bias object
+     * 
+     * @param bias - Bias that the neuron is to be set to
+     */
+    void setBias(double bias);
+
+    /**
+     * @brief Set the Weights object
+     * 
+     * @param weights - Weight vector that the neuron will have 
+     */
+    void setWeights(std::vector<double> weights);
+
+    /**
+     * @brief Set the Activation object
+     * 
+     * @param activation - Setting the activation of current neuron
+     */
+    void setActivation(double activation);
+    /**
+     * @brief Set the Activation Base object
+     * 
+     * @param activationFunc - Set the activation function of a neuron to activationFunc
+     */
+    void setActivationBase(ActivationBase *activationFunc);
+
+    /**
+     * @brief Get the Bias object
+     * 
+     * @return Neuron Bias 
+     */
+    double getBias();
+
+    /**
+     * @brief Get the Weights object
+     * 
+     * @return Neuron Weights Vector 
+     */
+    std::vector<double> getWeights();
+
+    /**
+     * @brief Get the Activation object
+     * 
+     * @return Neuron Activation Value 
+     */
+    double getActivation();
+
+    /**
+     * @brief Get the Activation Function object
+     * 
+     * @return Activation Function of current Neuron
+     */
+    ActivationBase * getActivationFunction();
+
+
 private:
     ActivationBase *activationBase; // The base class for the activation function
     double activation;              // The value after the activation function has been applied to this neuron
