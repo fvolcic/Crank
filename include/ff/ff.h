@@ -14,7 +14,7 @@
 #include "sigmoid.h"
 #include <vector>
 #include <algorithm>
-#include 
+
 /**
  * @brief A class that represents the possible activation functions one can use
  * 
@@ -43,7 +43,7 @@ public:
      * @param weights - Weights of each neuron
      * @param bias - A bias term for each neuron in the neural network
      */
-     NeuralNetworkFF(int num_layers, std::vector<int> &neuron_counts, std::vector<std::vector<std::vector<double>>> &weights, std::vector<std::vector<double>> &bias);
+     NeuralNetworkFF(int num_layers, std::vector<int> &neuron_counts, const std::vector<std::vector<std::vector<double>>> &weights, const std::vector<std::vector<double>> &bias);
 
      /**
          * @brief Construct a new Neural Network object

@@ -13,9 +13,16 @@
  * @brief The activation function base class
  * 
  */
+
+#ifndef ACTIVATION_H
+#define ACTIVATION_H
+
 class ActivationBase{
 
 public:
+
+    ActivationBase(); 
+    virtual ~ActivationBase() = 0; 
 
     /**
      * @brief returns the value of the activation function at a given x
@@ -42,3 +49,5 @@ public:
     virtual double derivative(double x) = 0; 
 
 };
+
+#endif

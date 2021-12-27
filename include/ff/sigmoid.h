@@ -16,6 +16,9 @@ class Sigmoid : public ActivationBase
 
 public:
 
+    Sigmoid();
+    ~Sigmoid(); 
+
     /**
      * @brief returns the value of the activation function at a given x
      * 

@@ -77,7 +77,7 @@ NeuralNetworkFF::NeuralNetworkFF(int num_layers, std::vector<int> &neuron_counts
 {
 }
 
-NeuralNetworkFF::NeuralNetworkFF(int num_layers, std::vector<int> &neuron_counts, std::vector<std::vector<std::vector<double>>> &weights, std::vector<std::vector<double>> &bias)
+NeuralNetworkFF::NeuralNetworkFF(int num_layers, std::vector<int> &neuron_counts, const std::vector<std::vector<std::vector<double>>> &weights,const std::vector<std::vector<double>> &bias)
 {
     //Initializes first layer of Neural Network
     neurons.resize(num_layers);
@@ -89,14 +89,33 @@ NeuralNetworkFF::NeuralNetworkFF(int num_layers, std::vector<int> &neuron_counts
 
     for (int x = 1; x < neuron_counts.size(); ++x)
     {
-        neurons.resize(neuron_counts[x]);
+        neurons[x].resize(neuron_counts[x]);
         for (int y = 0; y < neuron_counts[x]; ++y)
         {
             neurons[x][y].setBias(bias[x][y]);
             neurons[x][y].setWeights(weights[x][y]);
         }
     }
+    
+
+   /*
+    neurons.resize(num_layers); 
+    for(int i = 0; i < num_layers; ++i){
+        neurons[i].resize(neuron_counts[i]); 
+        for(int j = 0; j < neuron_counts[i]; ++j){
+
+            neurons[i][j].setBias(bias[i][j]); 
+
+            for(int k = 0; k < weights[i][j].size(); ++k){
+
+            }
+
+        }
+    }
+    */
 }
+
+NeuralNetworkFF::~NeuralNetworkFF(){}
 
 void NeuralNetworkFF::forwardPass(std::vector<double> &input, std::vector<double> &output)
 {
@@ -117,7 +136,7 @@ void NeuralNetworkFF::forwardPass(std::vector<double> &input, std::vector<double
     // Compute the forward pass for the network
     for (int i = 1; i < neurons.size(); ++i)
     {
-        for (int j = 0; i < neurons[i].size(); ++j)
+        for (int j = 0; j < neurons[i].size(); ++j)
         {
             neurons[i][j].computeInput(intermediate_result);
         }
@@ -143,10 +162,11 @@ std::vector<double> NeuralNetworkFF::forwardPass(std::vector<double> &input)
 
 void NeuralNetworkFF::findMaxLayerSize()
 {
-
+    maxLayerSize = 0; 
     for (int i = 0; i < neurons.size(); ++i)
     {
-        if (maxLayerSize < neurons[i].size())
+        if (maxLayerSize < neurons[i].size()){
             maxLayerSize = neurons[i].size();
+        }
     }
 }

@@ -46,7 +46,7 @@ void Neuron::computeInput(std::vector<double> previousLayer)
     {
         sum += previousLayer[i] * weights[i];
     }
-
+    sum += bias; 
     activation = (*activationBase).compute(sum);
 }
 
