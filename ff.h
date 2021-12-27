@@ -9,7 +9,7 @@
  * 
  */
 
-class NeuralNetwork{
+class NeuralNetworkFF{
     private:
 
     public:

@@ -1,7 +1,7 @@
 /**
- * @file activation.h
+ * @file sigmoid.h
  * 
- * @brief This contains the base class for the activation functions
+ * @brief 
  * @version 0.1
  * @date 2021-12-27
  * 
@@ -9,11 +9,10 @@
  * 
  */
 
-/**
- * @brief The activation function base class
- * 
- */
-class ActivationBase{
+#include "activation.h"
+
+class Identity : public ActivationBase
+{
 
 public:
 
@@ -23,7 +22,7 @@ public:
      * @param x - the x value
      * @return double 
      */
-    virtual double operator()(double x) = 0; 
+    virtual double operator()(double x); 
 
     /**
      * @brief Returns the value of the activation function at a given x
@@ -31,7 +30,7 @@ public:
      * @param x - the x value
      * @return double 
      */
-    virtual double compute(double x) = 0; 
+    virtual double compute(double x); 
 
     /**
      * @brief Returns the derivate of the activation function at a given x
@@ -39,6 +38,7 @@ public:
      * @param x 
      * @return double 
      */
-    virtual double derivative(double x) = 0; 
+    virtual double derivative(double x);
 
+private:
 };
