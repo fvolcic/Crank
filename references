@@ -8,3 +8,9 @@ Neural Network (Back propagation and matrix pass)
 
 C++ Move Semantics:
     https://mbevin.wordpress.com/2012/11/20/move-semantics/
+
+MNIST library:
+    https://github.com/wichtounet/mnist
+
+MNIST dataset:
+    http://yann.lecun.com/exdb/mnist/
