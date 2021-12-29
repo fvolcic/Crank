@@ -9,7 +9,7 @@
  * 
  */
 
-#include "../../include/MNIST/mnist.h"
+#include "../../include/mnist/mnist.h"
 
 MNIST_DATASET * read_dataset(){
     mnist::MNIST_dataset<std::vector, std::vector<uint8_t>, uint8_t> dataset =

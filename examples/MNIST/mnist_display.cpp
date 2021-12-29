@@ -1,12 +1,12 @@
 /**
  * This example is how to use the MNIST dataset. 
  * 
- * To compile, use "g++ examples/MNIST/mnist_display.cpp src/MNIST/mnist.cpp -o examples/MNIST/mnist_display_example"
+ * To compile, use "g++ examples/MNIST/mnist_display.cpp src/MNIST/mnist.cpp -o examples/mnist/mnist_display_example"
  * To run, use "./examples/MNIST/mnist_display_example"
  * 
  */
 
-#include "../../include/MNIST/mnist.h"
+#include "../../include/mnist/mnist.h"
 #include <random>
 #include <limits>
 #include <iostream>
