@@ -38,7 +38,7 @@ Neuron::Neuron(const Neuron &n1)
 
 void Neuron::setInput(double input)
 {
-    activation = (*activationBase).compute(input);
+    activation = activationBase->compute(input);
 }
 
 void Neuron::computeInput(std::vector<double> previousLayer)
