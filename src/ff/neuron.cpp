@@ -31,6 +31,8 @@ Neuron::Neuron(const Neuron &n1)
     bias = n1.bias;
     weights = n1.weights;
     activation = n1.activation;
+    
+    // TODO: Double check this. I think that the activation base is dynamically allocated, thus we need to deep copy this
     activationBase = n1.activationBase;
 }
 
