@@ -133,8 +133,15 @@ private:
     ActivationBase *activationBase; // The base class for the activation function
     double activation;              // The value after the activation function has been applied to this neuron
 
-    double bias;
+    double bias;                   // The bias for the neuron 
 
-    std::vector<double> weights;
+    std::vector<double> weights;   // A vector of all the weights for connections into the neuron
+
+    // These are used for computing the partial derivatives
+
+    double average_bias_dL = 0;            // the average bias partial derivative
+    std::vector<double> average_weights_dL; // The average weights partial derivatives
+    int num_examples = 0;            // The current number of training examples
+
 };
 
