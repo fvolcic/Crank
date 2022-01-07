@@ -92,3 +92,19 @@ double Neuron::getActivation(){
 ActivationBase * Neuron::getActivationFunction(){
     return activationBase;
 }
+
+void Neuron::set_dActivation_dInput(double value){
+    dActivaton_dInput = value; 
+}
+
+double Neuron::get_dActivation_dInput(){
+    return dActivaton_dInput; 
+}
+
+void Neuron::set_dLoss_dActivation(double value){
+    dLoss_dActivation = value; 
+}
+
+double Neuron::get_dLoss_dActivation(){
+    return dLoss_dActivation;
+}

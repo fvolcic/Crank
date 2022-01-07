@@ -153,3 +153,19 @@ void NeuralNetworkFF::findMaxLayerSize()
         }
     }
 }
+
+
+////////////////////////////////////////////////////////////////////
+// BELOW ARE THE TRAINING AND BACK PROP FUNCTIONS                 //
+////////////////////////////////////////////////////////////////////
+
+void NeuralNetworkFF::train_on_example(std::vector<double> & input, std::vector<double> & expected_output){
+    
+    std::vector<double> output;
+    forwardPass(input, output);
+    
+    //BACK PROP PORTION
+    
+}
+
+
