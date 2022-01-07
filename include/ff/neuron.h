@@ -9,11 +9,15 @@
  * 
  */
 
+#pragma once
+
 #include <vector>
 #include "activation.h"
-
+#include "ff.h"
 class Neuron
 {
+
+friend class NeuralNetworkFF;
 
 public:
     /**
@@ -53,6 +57,14 @@ public:
      */
     void setInput(double input);
 
+    
+    /**
+     * @brief Get the Input object
+     * 
+     * @return double 
+     */
+    double getInput();
+    
     /**
      * @brief Compute the input of a neuron given the activations of the previous layer of the network
      * 
@@ -155,9 +167,59 @@ public:
      */
     double get_dActivation_dInput();
 
+    /**
+     * @brief Set derivative of the loss function with respect to bias for a neuron 
+     * 
+     * @param value 
+     */
+    void set_dLoss_dBias(double value);
+
+    /**
+     * @brief Get the dLoss dBias object
+     * 
+     * @return derivative of the loss function with respect to bias for a neuron 
+     */
+    double get_dLoss_dBias();
+
+
+    /**
+     * @brief Set the dLoss dWeight object
+     * 
+     * @param Set vector of the derivatives of the Loss Function with respect to the weight of a neuron 
+     */
+    void set_dLoss_dWeight(std::vector<double> vec);
+    
+    /**
+     * @brief Get the dLoss dWeight object
+     * 
+     * @return The vector of the derivatives of the Loss Function with respect to the weight of a neuron
+     */
+    std::vector<double> get_dLoss_dWeight();
+
+    /**
+     * @brief Add a dLoss_dWeight data point to the neuron
+     * 
+     * @param data_points 
+     */
+    void add_dLoss_dWeight_data_point(std::vector<double> & data_points); 
+
+    /**
+     * @brief Add a dLoss_dBias data point to the neuron
+     * 
+     * @param data_point 
+     */
+    void add_dLoss_dBias_data_point(double data_point); 
+
+    /**
+     * @brief This resets the average derivate's
+     * 
+     */
+    void reset_partial_averages();
 
 private:
     ActivationBase *activationBase; // The base class for the activation function
+
+    double input;                   // The value of the input to the neuron    
     double activation;              // The value after the activation function has been applied to this neuron
 
     double bias; // The bias for the neuron
@@ -166,11 +228,16 @@ private:
 
     // These are used for computing the partial derivatives
 
-    double average_bias_dL = 0;             // the average bias partial derivative
-    std::vector<double> average_weights_dL; // The average weights partial derivatives
-    int num_examples = 0;                   // The current number of training examples
+    double average_dLoss_dBias = 0;             // the average bias partial derivative
+    std::vector<double> average_dLoss_dWeight; // The average weights partial derivatives
+    int num_examples_dBias = 0;                   // The current number of training examples
+    int num_examples_dWeight = 0;           
 
     // Backpropagation variables
     double dLoss_dActivation = 0;
     double dActivaton_dInput = 0;
+
+    double dLoss_dBias = 0;
+    std::vector<double> dLoss_dWeight; 
+
 };

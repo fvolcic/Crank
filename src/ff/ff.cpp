@@ -165,7 +165,90 @@ void NeuralNetworkFF::train_on_example(std::vector<double> & input, std::vector<
     forwardPass(input, output);
     
     //BACK PROP PORTION
-    
+
+    // Step 1: compute dLoss/dActivation for the final layer in the network
+    for(int i = 0; i < output.size(); ++i){
+        double dLoss_dAct_val = 2 * (neurons.back()[i].getActivation() - expected_output[i]);
+        neurons.back()[i].set_dLoss_dActivation(dLoss_dAct_val);
+    }
+
+    // Step 2: compute dActivation_dInput for the final layer in the network
+    for(int i = 0; i < output.size(); ++i){
+        Neuron & neuron = neurons.back()[i];
+        neuron.set_dActivation_dInput( neuron.getActivationFunction()->derivative( neuron.getInput() ));
+    }
+
+    // Now compute derivate of the bias and the weights for the first layer in the neural network
+    for(int i = 0; i < output.size(); ++i){
+        Neuron & neuron = neurons.back()[i];
+        calculate_dLoss_dWeight_and_dLoss_dBias(neuron, neurons.size() - 1); 
+    }
+
 }
 
 
+void NeuralNetworkFF::back_propagation(int layer){
+
+    for(int i = 0; i < neurons[layer].size(); ++i){
+        Neuron & neuron = neurons[layer][i]; 
+        this->calculate_dLoss_dActivation(neuron, layer, i);
+    }
+
+    // Step 2: compute dActivation_dInput for the final layer in the network
+    for(int i = 0; i < neurons[layer].size(); ++i){
+        Neuron & neuron = neurons[layer][i];
+        calculate_dActivation_dInput(neuron, layer);
+        // neuron.set_dActivation_dInput( neuron.getActivationFunction()->derivative( neuron.getInput() ));
+    }
+
+    // Now compute derivate of the bias and the weights for the first layer in the neural network
+    for(int i = 0; i < neurons[layer].size(); ++i){
+        Neuron & neuron = neurons[layer][i];
+        calculate_dLoss_dWeight_and_dLoss_dBias(neuron, layer); 
+    }
+
+if(layer != 1)
+    back_propagation(layer - 1); 
+
+}
+
+
+void NeuralNetworkFF::calculate_dActivation_dInput(Neuron & neuron, int layer){
+     neuron.set_dActivation_dInput(neuron.getActivationFunction()->derivative( neuron.getInput() ));
+}
+
+void NeuralNetworkFF::calculate_dLoss_dActivation(Neuron & neuron, int layer, int index){
+        double dL_dA = 0; 
+        
+        for(int j = 0; j < neurons[layer + 1].size(); ++j){
+            Neuron & neuron = neurons[layer + 1][j]; 
+            dL_dA += neuron.weights[index] * neuron.get_dActivation_dInput() * neuron.get_dLoss_dActivation(); 
+        }
+
+        neurons[layer][index].set_dLoss_dActivation(dL_dA); 
+}
+
+// void NeuralNetworkFF::calculate_dLoss_dBias(Neuron & neuron, int layer){
+
+// }
+
+void NeuralNetworkFF::calculate_dLoss_dWeight_and_dLoss_dBias(Neuron & neuron, int layer){
+    
+        double dL_dB = neuron.get_dLoss_dActivation() * neuron.get_dActivation_dInput();
+        neuron.set_dLoss_dBias(dL_dB);
+        neuron.add_dLoss_dBias_data_point(dL_dB);
+
+        // Computes the derivate of the loss with respect to each weight
+        double dA_dZ = neuron.get_dActivation_dInput();
+        std::vector<double> dLoss_dWeights = std::vector<double>(neuron.weights.size(), 0); 
+
+        double dLoss_dZ = neuron.get_dLoss_dActivation() * dA_dZ;
+        for(int j = 0; j < neuron.weights.size(); ++j){
+            double dZ_dW = neurons[layer - 1][j].getActivation(); 
+            double dL_dW = dLoss_dZ * dZ_dW; 
+            dLoss_dWeights[j] = dL_dW;
+            neuron.dLoss_dWeight[j] = dL_dW; 
+        }
+
+        neuron.add_dLoss_dWeight_data_point(dLoss_dWeights); 
+}
