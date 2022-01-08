@@ -9,8 +9,6 @@
  * 
  */
 
-#pragma once
-
 #include "neuron.h"
 #include "activation.h"
 #include "sigmoid.h"

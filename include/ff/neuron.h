@@ -9,11 +9,12 @@
  * 
  */
 
-#pragma once
-
 #include <vector>
 #include "activation.h"
-#include "ff.h"
+// #include "ff.h"
+
+class NeuralNetworkFF; 
+
 class Neuron
 {
 
@@ -215,6 +216,14 @@ public:
      * 
      */
     void reset_partial_averages();
+
+    /**
+     * @brief Update the weights and the bias' in the neural network
+     * 
+     * @param learning_rate 
+     * @param reset 
+     */
+    void update_weights_bias(double learning_rate, bool reset = true);
 
 private:
     ActivationBase *activationBase; // The base class for the activation function

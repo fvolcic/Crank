@@ -252,3 +252,14 @@ void NeuralNetworkFF::calculate_dLoss_dWeight_and_dLoss_dBias(Neuron & neuron, i
 
         neuron.add_dLoss_dWeight_data_point(dLoss_dWeights); 
 }
+
+void NeuralNetworkFF::update_weights(double learning_rate, bool reset){
+    
+    // Update layer by layer, neuron by neuron within each layer 
+    for(int layer = 0; layer < neurons.size(); ++layer){
+        for(Neuron & neuron : neurons[layer]){
+            neuron.update_weights_bias(learning_rate, reset);
+        }
+    }
+
+}

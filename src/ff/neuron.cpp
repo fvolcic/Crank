@@ -18,13 +18,16 @@ Neuron::Neuron() : bias(0), weights(), activation(0)
     this->activationBase = new Sigmoid();
 }
 
-Neuron::Neuron(double bias, std::vector<double> weights) : bias(bias), weights(weights), activation(0)
+Neuron::Neuron(double bias, std::vector<double> weights) : bias(bias), weights(weights), activation(0), 
+                                                            dLoss_dWeight(weights.size(), 0), average_dLoss_dWeight(weights.size(), 0)
 {
     this->activationBase = new Sigmoid();
 }
 
 Neuron::Neuron(double bias, std::vector<double> weights, ActivationBase *activationFunction) : bias(bias), weights(weights),
-                                                                                               activation(0), activationBase(activationFunction), dLoss_dWeight(weights.size(), 0) {}
+                                                                                               activation(0), activationBase(activationFunction), 
+                                                                                               dLoss_dWeight(weights.size(), 0),
+                                                                                               average_dLoss_dWeight(weights.size()) {}
 
 Neuron::Neuron(const Neuron &n1)
 {
@@ -69,9 +72,13 @@ void Neuron::setBias(double bias)
     this->bias = bias;
 }
 
+// TODO: Make this take the input by reference rather than by copy
 void Neuron::setWeights(std::vector<double> weights)
 {
     this->weights = weights;
+    this->average_dLoss_dWeight.resize(weights.size()); 
+    this->dLoss_dWeight.resize(weights.size()); 
+
 }
 
 void Neuron::setActivation(double activation)
@@ -178,4 +185,24 @@ void Neuron::reset_partial_averages()
     average_dLoss_dBias = 0;
     num_examples_dWeight = 0;
     num_examples_dBias = 0;
+}
+
+void Neuron::update_weights_bias(double learning_weight, bool reset){
+    bias = getBias() - average_dLoss_dBias * learning_weight; 
+
+    if(reset){
+        average_dLoss_dBias = 0;
+        num_examples_dBias = 0;
+    }
+
+    for(int i = 0; i < weights.size(); ++i){
+        weights[i] = getWeights()[i] - average_dLoss_dWeight[i] * learning_weight;
+        
+        if(reset)
+            average_dLoss_dWeight[i] = 0;
+    }
+
+    if(reset)
+        num_examples_dWeight = 0;
+    
 }
