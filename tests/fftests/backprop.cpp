@@ -155,8 +155,14 @@ TEST(test_update_net_2){
     ASSERT_ALMOST_EQUAL( net.neurons[2][0].getBias(), 0.5 - (-0.0703823097243 + 0.279533708405)/2, 0.00000001 );
     ASSERT_ALMOST_EQUAL( net.neurons[2][0].getWeights()[0], 0.5 - (-0.0575427800061 + 0.1739983651) / 2, 0.0000001 ); 
 
-    ASSERT_ALMOST_EQUAL( net.neurons[1][0].getBias(), 0.5 - (-0.0104972717839 + 0.0656914591606) / 2, 0.00000001);- 
+    ASSERT_ALMOST_EQUAL( net.neurons[1][0].getBias(), 0.5 - (-0.0104972717839 + 0.0656914591606) / 2, 0.00000001);
+
+    // TODO: Check this. Apparently this is working now. 
+
     ASSERT_ALMOST_EQUAL( net.neurons[1][0].getWeights()[1], 0.5 - (-0.0104972717839 + 0) / 2, 0.00000001); 
+    ASSERT_ALMOST_EQUAL( net.neurons[1][0].getWeights()[0], 0.5 - (-0.0104972717839 + 0) / 2, 0.00000001); 
+    ASSERT_EQUAL( net.neurons[1][0].get_dLoss_dWeight()[0], 0); 
+    ASSERT_EQUAL( net.neurons[1][0].get_dLoss_dWeight()[1], 0); 
 }
 
 TEST_MAIN()
