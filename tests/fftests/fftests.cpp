@@ -1,3 +1,20 @@
+/**
+ * @file fftests.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-01-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ * 
+ * @note To compile:
+ *          g++ tests/fftests/fftests.cpp src/ff/* -g3 -o bin/fftests_test
+ *       To run:
+ *          ./bin/fftests_test
+ * 
+ */
+
 #include "../unit_test_framework.h"
 #include "../../include/ff/ff.h"
 #include <vector> 
