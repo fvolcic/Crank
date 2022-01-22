@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/a.out",
+            "program": "${workspaceFolder}/bin/mnist_nn_example",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

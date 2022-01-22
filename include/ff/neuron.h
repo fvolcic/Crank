@@ -225,7 +225,10 @@ public:
      */
     void update_weights_bias(double learning_rate, bool reset = true);
 
+#ifndef NN_DEBUG
 private:
+#endif
+
     ActivationBase *activationBase; // The base class for the activation function
 
     double input;                   // The value of the input to the neuron    
