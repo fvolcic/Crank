@@ -15,13 +15,13 @@
 Neuron::Neuron() : bias(0), weights(), activation(0)
 {
 
-    this->activationBase = new Sigmoid();
+    this->activationBase = new Sigmoid(); // TODO : Add neuron deconstructer
 }
 
 Neuron::Neuron(double bias, std::vector<double> weights) : bias(bias), weights(weights), activation(0), 
                                                             dLoss_dWeight(weights.size(), 0), average_dLoss_dWeight(weights.size(), 0)
-{
-    this->activationBase = new Sigmoid();
+{ 
+    this->activationBase = new Sigmoid(); // TODO: Add neurom deconstructor
 }
 
 Neuron::Neuron(double bias, std::vector<double> weights, ActivationBase *activationFunction) : bias(bias), weights(weights),
