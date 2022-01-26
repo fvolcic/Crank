@@ -126,7 +126,7 @@ public:
   template <typename ExamplesIterator, typename ExpectIterator>
   void train(ExamplesIterator examples_iter, ExamplesIterator examples_end,
              ExpectIterator expect_iter, ExpectIterator expect_end,
-             int max_examples = -1, TrainConfig *config = nullptr);
+            TrainConfig *config = nullptr);
 
   /**
    * @brief Extra config settings for testing the network

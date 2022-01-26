@@ -287,7 +287,7 @@ size_t NeuralNetworkFF::get_num_layers()
 template <typename ExamplesIterator, typename ExpectIterator>
 void NeuralNetworkFF::train(ExamplesIterator examples_iter, ExamplesIterator examples_end,
                             ExpectIterator expect_iter, ExpectIterator expect_end,
-                            int max_examples, TrainConfig *config)
+                            TrainConfig *config)
 {
 
     if(max_examples == -1){
@@ -297,8 +297,13 @@ void NeuralNetworkFF::train(ExamplesIterator examples_iter, ExamplesIterator exa
     int example_val = 0;
 
     while(examples_iter != examples_end && expect_iter != expect_end && example_val < max_examples){
+        ++example_val; 
 
-        
+        this->train_on_example(*examples_iter, *expect_iter); 
+        examples_iter+=1;
+        expect_iter+=1;
+
+
 
     }
 
