@@ -11,6 +11,7 @@
 
 #include "../../include/ff/ff.h"
 #include <random>
+#include <limits>
 
 double random_nn()
 {
@@ -194,7 +195,7 @@ void NeuralNetworkFF::train_on_example(std::vector<double> &input, std::vector<d
 
 void NeuralNetworkFF::back_propagation(int layer)
 {
-    // Calculate dLoss_dActivation for the current layer 
+    // Calculate dLoss_dActivation for the current layer
     for (int i = 0; i < neurons[layer].size(); ++i)
     {
         Neuron &neuron = neurons[layer][i];
@@ -281,4 +282,24 @@ void NeuralNetworkFF::update_weights(double learning_rate, bool reset)
 size_t NeuralNetworkFF::get_num_layers()
 {
     return neurons.size();
+}
+
+template <typename ExamplesIterator, typename ExpectIterator>
+void NeuralNetworkFF::train(ExamplesIterator examples_iter, ExamplesIterator examples_end,
+                            ExpectIterator expect_iter, ExpectIterator expect_end,
+                            int max_examples, TrainConfig *config)
+{
+
+    if(max_examples == -1){
+        max_examples = std::numeric_limits<int>::max(); 
+    }
+
+    int example_val = 0;
+
+    while(examples_iter != examples_end && expect_iter != expect_end && example_val < max_examples){
+
+        
+
+    }
+
 }
