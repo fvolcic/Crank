@@ -299,11 +299,11 @@ void NeuralNetworkFF::train(ExamplesIterator examples_iter, ExamplesIterator exa
     while(examples_iter != examples_end && expect_iter != expect_end && example_val < max_examples){
         ++example_val; 
 
-        this->train_on_example(*examples_iter, *expect_iter); 
+        train_on_example(*examples_iter, *expect_iter); 
         examples_iter+=1;
         expect_iter+=1;
 
-
+        
 
     }
 

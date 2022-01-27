@@ -9,5 +9,15 @@
  * 
  */
 
-// TODO 
-// FIXME
+/**
+ * @brief Class for the first learning function
+ * 
+ */
+class DefaultLearningFunction1
+{
+public:
+    
+    DefaultLearningFunction1();
+
+    double operator()();
+};
