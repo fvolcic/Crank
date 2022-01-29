@@ -10,21 +10,11 @@
  */
 
 #include "../../include/ff/ff.h"
-#include <random>
+#include "../../include/ff/learning_functions.h"
+#include "../../include/utils.h"
 #include <limits>
-
-double random_nn()
-{
-    static std::uniform_real_distribution<> distr(0, 1);
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    return distr(gen);
-}
-
-double random_range(double a, double b)
-{
-    return random_nn() * (b - a) + a;
-}
+#include <iostream>
+#include <sstream>
 
 std::vector<std::vector<double>> random_bias_helper(std::vector<int> neuron_counts)
 {
@@ -290,21 +280,88 @@ void NeuralNetworkFF::train(ExamplesIterator examples_iter, ExamplesIterator exa
                             TrainConfig *config)
 {
 
-    if(max_examples == -1){
+    // If a nullptr is passed for the config, then train with the default parameters on the network
+    if (!config)
+        config = TrainConfig();
+
+    // Set the max number of examples. Assumes that max() is more than will ever be attempted by a reasonable human
+    if (config->max_examples == -1)
+        max_examples = std::numeric_limits<int>::max();
+
+    LearningRateFunctionBase *learning_rate_function = config->learning_function;
+    ConstantLearningFunction ConstantRateFunction;
+
+    // If the learning rate is nullptr, then set it to be the ConstantLearningRate function
+    if (!learning_rate_function)
+        learning_rate_function = &ConstantRateFunction;
+
+    // The current number of examples that we have seen
+    int example_index = 0;
+    int batch_size = config->batch_size;
+
+    while (examples_iter != examples_end && expect_iter != expect_end && example_val < max_examples)
+    {
+
+        ++example_index;
+
+        train_on_example(*examples_iter, *expect_iter);
+        examples_iter += 1;
+        expect_iter += 1;
+
+        // Update the weights and bias' in the neural network
+        if (example_index % batch_size == 0)
+            update_weights(learning_rate_function->get_learning_rate(), true);
+
+        if (verbose && verbose_count % examples_index == 0)
+            std::cout << "Trained on " << example_index << " examples. " std::endl;
+    }
+}
+
+template <typename ExamplesIterator, typename ExpectIterator, typename OutputCmp>
+NeuralNetworkFF::TestResults NeuralNetworkFF::test(ExamplesIterator examples_iter, ExamplesIterator examples_end,
+                                                   ExpectIterator expect_iter, ExpectIterator expect_end, OutputCmp output_cmp,
+                                                   TestConfig *config)
+{
+
+    if (!config)
+        config = TestConfig();
+
+    int max_examples;
+    if(config->max_examples == -1)
         max_examples = std::numeric_limits<int>::max(); 
+
+    // Variables needed for the test results
+    int num_correct = 0; 
+    int num_incorrect = 0;
+    
+    
+    // Setup for the training
+    std::vector < double > output = std::vector < double > ( neurons.back().size() ) ; 
+
+    while (examples_iter != examples_end && expect_iter != expect_end && example_val < max_examples){
+
+        if( output_cmp(forwardPass(*examples_iter), *expect_iter )
+            ++num_correct;
+        else    
+            ++num_incorrect;
+
     }
 
-    int example_val = 0;
+    // The testing return struct. 
+    TestResults results;
+    results.correct = num_correct;
+    results.incorrect = num_incorrect;
+    results.correct_rate = num_correct + num_incorrect; 
+    results.correct_rate = (double) num_correct / num_incorrect; 
 
-    while(examples_iter != examples_end && expect_iter != expect_end && example_val < max_examples){
-        ++example_val; 
+    return results;
+    
+}
 
-        train_on_example(*examples_iter, *expect_iter); 
-        examples_iter+=1;
-        expect_iter+=1;
-
-        
-
-    }
-
+std::ostream & operator<<(std::ostream & os, const NeuralNetworkFF::TestResults & results){
+    os << "Test Results:\n\n"; 
+    os << "    Total Correct: " << results.correct << "\n";
+    os << "    Total Incorrect: " << results.incorrect << "\n";
+    os << "    Total Examples: " << results.num_examples << "\n";
+    os << "    Correct Rate: " << results.correct_rate << "\n";
 }

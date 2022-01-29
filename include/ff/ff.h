@@ -9,12 +9,14 @@
  * 
  */
 
-#include "neuron.h"
 #include "activation.h"
+#include "learning_functions.h"
+#include "neuron.h"
 #include "sigmoid.h"
-#include <vector>
 #include <algorithm>
 #include <iterator>
+#include <vector>
+#include <sstream>
 
 /**
  * @brief A class that represents the possible activation functions one can use
@@ -111,19 +113,26 @@ public:
      */
    struct TrainConfig
    {
-      int batch_size = 10; 
+      int batch_size = 1;
       int skip_rate = 0;
+      int num_training_examples = -1;
       bool verbose = false;
       int verbose_count = 100;
+
+      LearningRateFunctionBase *learning_function = nullptr;
    };
 
    /**
-     * @brief Train neural network given an examples iterator and a expected output iterator. 
-     * 
-     * @tparam Iterator 
-     * @param input 
-     * @param end 
-     */
+    * @brief This method provides a training interface where all the training will happen based on the passed parameters. 
+    * 
+    * @tparam ExamplesIterator - An iterator type for the examples. 
+    * @tparam ExpectIterator - an iterator type for the expected output of the network.
+    * @param examples_iter - The examples iterator object.
+    * @param examples_end - end examples iterator object.
+    * @param expect_iter - The expect iterator object.
+    * @param expect_end - the expect iterator end.
+    * @param config - The training configuration struct.
+    */
    template <typename ExamplesIterator, typename ExpectIterator>
    void train(ExamplesIterator examples_iter, ExamplesIterator examples_end,
               ExpectIterator expect_iter, ExpectIterator expect_end,
@@ -135,7 +144,7 @@ public:
    */
    struct TestConfig
    {
-      int a = 0;
+      int max_examples = -1;
    };
 
    /**
@@ -149,19 +158,30 @@ public:
       double correct_rate;
 
       size_t num_examples;
+
+      friend std::ostream& operator<<(std::ostream& os, const TestResults & results);
+
    };
 
    /**
-     * @brief Train neural network given an examples iterator and a expected output iterator. 
-     * 
-     * @tparam Iterator 
-     * @param input 
-     * @param end 
-     */
-   template <typename ExamplesIterator, typename ExpectIterator>
+    * @brief This function is a a skeleton function for testing the neural network. This function takes a number of easily testable
+    *        parameters to make the actual testing of the network as seamless as possible.
+    * 
+    * @tparam ExamplesIterator - An iterator type for the examples. 
+    * @tparam ExpectIterator - an iterator type for the expected output of the network.
+    * @tparam OutputCmp - class type with operator()() defined which takes two std::vector<double>'s and then compares if they are "equivalent" (What the network was supposed to output)
+    * @param examples_iter - The examples iterator object.
+    * @param examples_end - end examples iterator object.
+    * @param expect_iter - The expect iterator object.
+    * @param expect_end - the expect iterator end.
+    * @param output_cmp - the output compare object.
+    * @param config - the test net config struct.
+    * @return TestResults - the test results from testing the network. 
+    */
+   template <typename ExamplesIterator, typename ExpectIterator, typename OutputCmp>
    TestResults test(ExamplesIterator examples_iter, ExamplesIterator examples_end,
-                    ExpectIterator expect_iter, ExpectIterator expect_end,
-                    int max_examples = -1, TestConfig *config = nullptr);
+                    ExpectIterator expect_iter, ExpectIterator expect_end, OutputCmp output_cmp,
+                    TestConfig *config = nullptr);
 
 #ifndef NN_DEBUG
 protected:
