@@ -284,8 +284,10 @@ void NeuralNetworkFF::train(ExamplesIterator examples_iter, ExamplesIterator exa
     if (!config)
         config = TrainConfig();
 
+    int max_examples = config->num_training_examples;
+
     // Set the max number of examples. Assumes that max() is more than will ever be attempted by a reasonable human
-    if (config->max_examples == -1)
+    if (config->num_training_examples == -1)
         max_examples = std::numeric_limits<int>::max();
 
     LearningRateFunctionBase *learning_rate_function = config->learning_function;
@@ -299,7 +301,7 @@ void NeuralNetworkFF::train(ExamplesIterator examples_iter, ExamplesIterator exa
     int example_index = 0;
     int batch_size = config->batch_size;
 
-    while (examples_iter != examples_end && expect_iter != expect_end && example_val < max_examples)
+    while (examples_iter != examples_end && expect_iter != expect_end && example_index < max_examples)
     {
 
         ++example_index;
@@ -312,8 +314,8 @@ void NeuralNetworkFF::train(ExamplesIterator examples_iter, ExamplesIterator exa
         if (example_index % batch_size == 0)
             update_weights(learning_rate_function->get_learning_rate(), true);
 
-        if (verbose && verbose_count % examples_index == 0)
-            std::cout << "Trained on " << example_index << " examples. " std::endl;
+        if (config->verbose && config->verbose_count % example_index == 0)
+            std::cout << "Trained on " << example_index << " examples. " << std::endl;
     }
 }
 
@@ -334,13 +336,14 @@ NeuralNetworkFF::TestResults NeuralNetworkFF::test(ExamplesIterator examples_ite
     int num_correct = 0; 
     int num_incorrect = 0;
     
+    int example_index = 0; 
     
     // Setup for the training
     std::vector < double > output = std::vector < double > ( neurons.back().size() ) ; 
 
-    while (examples_iter != examples_end && expect_iter != expect_end && example_val < max_examples){
-
-        if( output_cmp(forwardPass(*examples_iter), *expect_iter )
+    while (examples_iter != examples_end && expect_iter != expect_end && example_index < max_examples){
+        ++example_index; 
+        if( output_cmp(forwardPass(*examples_iter), *expect_iter ))
             ++num_correct;
         else    
             ++num_incorrect;
@@ -364,4 +367,5 @@ std::ostream & operator<<(std::ostream & os, const NeuralNetworkFF::TestResults 
     os << "    Total Incorrect: " << results.incorrect << "\n";
     os << "    Total Examples: " << results.num_examples << "\n";
     os << "    Correct Rate: " << results.correct_rate << "\n";
+    return os; 
 }

@@ -119,6 +119,7 @@ public:
       bool verbose = false;
       int verbose_count = 100;
 
+
       LearningRateFunctionBase *learning_function = nullptr;
    };
 

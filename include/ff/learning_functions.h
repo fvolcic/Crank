@@ -14,6 +14,9 @@
  *        A neural network learning function is constructed first by the user, then passed to functions that need them.
  */
 
+#ifndef LEARNING_FUNCTIONS_H
+#define LEARNING_FUNCTIONS_H
+
 class LearningRateFunctionBase
 {
 public:
@@ -48,3 +51,5 @@ public:
 
 private:
 };
+
+#endif

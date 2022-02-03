@@ -16,31 +16,49 @@
 #include "../../include/mnist/mnist.h"
 #include <vector>
 #include <iostream>
+#include <random>
+#include <cmath>
+
+double random_nn2()
+{
+    static std::uniform_real_distribution<> distr(0, 1);
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    return distr(gen);
+}
+
+double random_range2(double a, double b)
+{
+    return random_nn2() * (b - a) + a;
+}
 
 int main(){
 
     MNIST_DATASET * dataset = read_dataset(); // Read the dataset from memory
 
-    int num_layers = 4;
-    std::vector<int> neuron_counts = {784, 20, 15, 10};
+    int num_layers = 3;
+    std::vector<int> neuron_counts = {784, 128, 10};
     NeuralNetworkFF net(num_layers, neuron_counts); 
 
-    for(int i = 0; i < dataset->test_labels.size(); ++i){
+    for(int jk = 0; jk < dataset->training_images.size() / 4; ++jk){
 
+        // int i = (int) floor( dataset->test_labels.size() * random_range2(0, 1) ); 
+        int i = jk; 
         std::vector<double> input; 
         for(int j = 0; j < dataset->training_images[i].size(); ++j){ 
             input.push_back(dataset->training_images[i][j]);
         }
         std::vector<double> output(10, 0);
-        output[dataset->test_labels[i]] = 1; 
+        output[dataset->training_labels[i]] = 2; 
         net.train_on_example(input, output); 
 
-        if(i % 10 == 0){
-            net.update_weights(0.1); 
+        if(jk % 60 == 0){
+            net.update_weights(0.11); 
         }
+        
 
-        if(i % 100 == 0){
-            std::cout << "Trained on " << i << " examples" << std::endl;
+        if(jk % 100 == 0){
+            std::cout << "Trained on " << jk << " examples | " << dataset->training_images.size() - jk << " Remaining " << std::endl;
             
         }
 
@@ -51,7 +69,7 @@ int main(){
     int examples = 0;
     int correct = 0;
 
-    for(int i = 0; i < 10; ++i){
+    for(int i = 0; i < 40; ++i){
         std::vector<double> input; 
         for(int j = 0; j < dataset->test_images[i].size(); ++j){ 
             input.push_back(dataset->test_images[i][j]);
