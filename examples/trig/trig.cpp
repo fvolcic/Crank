@@ -9,7 +9,7 @@
  *
  * @note
  *      to compile:
- *          g++ examples/trip/trig.cpp src/ff/ff.h -Ofast -o bin/trip_example
+ *          g++ examples/trig/trig.cpp src/ff/* -Ofast -o bin/trip_example
  *
  */
 
@@ -141,11 +141,11 @@ int main()
 
     // Step 3: Set up the training configuration 
     NeuralNetworkFF::TrainConfig train_config;
-    train_config.batch_size = 1; 
+    train_config.batch_size = 60; 
     train_config.learning_function = new ConstantLearningFunction(0.1);
     train_config.verbose = false; 
     train_config.verbose_count = 1000;
-    train_config.num_training_examples = 100000;
+    train_config.num_training_examples = 10000;
 
     // Step 4: Train
     net.train(examples, examples, expect, expect, &train_config);
@@ -176,5 +176,7 @@ int main()
         std::cout << "Prediction: " << output[0] << " | Actual: " << cos(value) << "\n" << std::endl;
 
     }
+
+    delete train_config.learning_function;
 
 }

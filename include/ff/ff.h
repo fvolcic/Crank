@@ -245,6 +245,8 @@ public:
             ++num_correct;
          else
             ++num_incorrect;
+         examples_iter += 1; 
+         expect_iter += 1; 
       }
 
       // The testing return struct.
