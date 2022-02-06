@@ -40,16 +40,21 @@ public:
      * @brief Construct a new Constant Learning Function object
      * 
      */
-    ConstantLearningFunction();
+    inline ConstantLearningFunction(double rate) : rate(rate){
+
+    }
 
     /**
      * @brief Get the learning rate of the instantiation
      * 
      * @return double 
      */
-    double get_learning_rate() override;
+    inline double get_learning_rate() override{
+        return rate; 
+    }
 
 private:
+double rate; 
 };
 
 #endif

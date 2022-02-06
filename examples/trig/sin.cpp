@@ -7,6 +7,12 @@
  * 
  * @copyright Copyright (c) 2022
  * 
+ * @note to compile:
+ *          g++ examples/trig/sin.cpp src/ff/* -o bin/sin
+ * 
+ *      to run:
+ *         ./bin/sin
+ * 
  */
 
 #include <iostream>
@@ -20,7 +26,7 @@ using namespace std;
 int main(){
 
     int num_layers = 5;
-    std::vector<int> neuron_counts = {1, 1, 1, 1, 1};
+    std::vector<int> neuron_counts = {1, 2, 5, 2, 1};
     std::vector<std::vector<std::vector< double >>> weights = {
                                                              {{}}, // No weights for layer 1
                                                              {{  }}, // Weights going into layer 2
@@ -38,7 +44,7 @@ int main(){
     double err = 0;
 
     for(int i = 0; i < 10000; ++i){
-        input[0] = ((double) rand() / RAND_MAX) * 2 * M_PI; 
+        input[0] = ((double) rand() / RAND_MAX); 
         output[0] = sin(input[0]); 
 
         auto calced = net.forwardPass(input);
@@ -50,16 +56,17 @@ int main(){
     cout << "Tested on " << examples << " examples" << endl;
     cout << "The average err was " << (err / examples) << "\n" << endl; 
 
-    for(int i = 0; i < 100000; ++i){
+    for(int i = 0; i < 1000000; ++i){
         
-        input[0] = 0;
+        input[0] = ((double) rand() / RAND_MAX);
         output[0] = sin(input[0]); 
 
         net.train_on_example(input, output);
 
-        if(i % 200 == 0){
-            net.update_weights(10000 / (i + 1)); 
-            //net.update_weights(1);
+       // i
+       if(i % 60 == 0){
+           // net.update_weights(10000 / (i + 1)); 
+            net.update_weights(0.1);
         }
     }
 
@@ -69,7 +76,7 @@ int main(){
     err = 0;
 
     for(int i = 0; i < 10000; ++i){
-        input[0] = ((double) rand() / RAND_MAX) * 2 * M_PI; 
+        input[0] = ((double) rand() / RAND_MAX); 
         output[0] = sin(input[0]); 
 
         auto calced = net.forwardPass(input);

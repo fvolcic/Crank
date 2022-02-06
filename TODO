@@ -30,3 +30,5 @@
         struct NetTestResults results = net.test_network(test_input_iterator, test_expect_iterator, <optional> num_examples); 
 
 3.) Add a way that users can save neural networks to a file, and then also load neural networks from the given file.
+
+4.) Use valgrind and check for memory leaks

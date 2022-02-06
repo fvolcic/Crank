@@ -30,7 +30,8 @@ std::vector<std::vector<double>> random_bias_helper(std::vector<int> neuron_coun
     {
         for (int j = 0; j < output[i].size(); ++j)
         {
-            output[i][j] = random_range(-0.3, 0.3);
+            //output[i][j] = random_range(-0.05, 0.05);
+            output[i][j] = 0;
         }
     }
 
@@ -55,7 +56,7 @@ std::vector<std::vector<std::vector<double>>> random_weight_helper(std::vector<i
             output[i][j].resize(neuron_counts[i - 1]);
             for (int k = 0; k < output[i][j].size(); ++k)
             {
-                output[i][j][k] = random_range(-0.3, 0.3);
+                output[i][j][k] = random_range(-0.05, 0.05);
             }
         }
     }
@@ -91,7 +92,7 @@ NeuralNetworkFF::NeuralNetworkFF(int num_layers, std::vector<int> &neuron_counts
 
 NeuralNetworkFF::~NeuralNetworkFF() {}
 
-void NeuralNetworkFF::forwardPass(std::vector<double> &input, std::vector<double> &output)
+void NeuralNetworkFF::forwardPass(const std::vector<double> &input, std::vector<double> &output)
 {
 
     if (maxLayerSize == -1)
@@ -127,7 +128,7 @@ void NeuralNetworkFF::forwardPass(std::vector<double> &input, std::vector<double
     }
 }
 
-std::vector<double> NeuralNetworkFF::forwardPass(std::vector<double> &input)
+std::vector<double> NeuralNetworkFF::forwardPass(const std::vector<double> &input)
 {
     std::vector<double> output;
     forwardPass(input, output);
@@ -150,7 +151,7 @@ void NeuralNetworkFF::findMaxLayerSize()
 // BELOW ARE THE TRAINING AND BACK PROP FUNCTIONS                 //
 ////////////////////////////////////////////////////////////////////
 
-void NeuralNetworkFF::train_on_example(std::vector<double> &input, std::vector<double> &expected_output)
+void NeuralNetworkFF::train_on_example(const std::vector<double> &input, const std::vector<double> &expected_output)
 {
 
     std::vector<double> output;
@@ -274,6 +275,7 @@ size_t NeuralNetworkFF::get_num_layers()
     return neurons.size();
 }
 
+/*
 template <typename ExamplesIterator, typename ExpectIterator>
 void NeuralNetworkFF::train(ExamplesIterator examples_iter, ExamplesIterator examples_end,
                             ExpectIterator expect_iter, ExpectIterator expect_end,
@@ -360,6 +362,7 @@ NeuralNetworkFF::TestResults NeuralNetworkFF::test(ExamplesIterator examples_ite
     return results;
     
 }
+*/
 
 std::ostream & operator<<(std::ostream & os, const NeuralNetworkFF::TestResults & results){
     os << "Test Results:\n\n"; 

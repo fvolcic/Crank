@@ -48,6 +48,7 @@
         "stack": "cpp"
     },
     "cSpell.words": [
-        "MNIST"
+        "MNIST",
+        "Ofast"
     ]
 }

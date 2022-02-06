@@ -40,7 +40,7 @@ int main(){
     std::vector<int> neuron_counts = {784, 128, 10};
     NeuralNetworkFF net(num_layers, neuron_counts); 
 
-    for(int jk = 0; jk < dataset->training_images.size() / 4; ++jk){
+    for(int jk = 0; jk < dataset->training_images.size()/8; ++jk){
 
         // int i = (int) floor( dataset->test_labels.size() * random_range2(0, 1) ); 
         int i = jk; 
@@ -49,11 +49,11 @@ int main(){
             input.push_back(dataset->training_images[i][j]);
         }
         std::vector<double> output(10, 0);
-        output[dataset->training_labels[i]] = 2; 
+        output[dataset->training_labels[i]] = 1; 
         net.train_on_example(input, output); 
 
         if(jk % 60 == 0){
-            net.update_weights(0.11); 
+            net.update_weights(0.6); 
         }
         
 
@@ -87,6 +87,11 @@ int main(){
         }
 
         std::cout << "Predicted " << prediction << " | Correct " << (int) dataset->test_labels[i] << std::endl; 
+        std::cout << "Output: "; 
+
+        for(auto number : output)
+            std::cout << number << " ";
+        std::cout << std::endl << std::endl;
 
         ++examples;
 
