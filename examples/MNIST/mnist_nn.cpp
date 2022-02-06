@@ -49,11 +49,11 @@ int main(){
             input.push_back(dataset->training_images[i][j]);
         }
         std::vector<double> output(10, 0);
-        output[dataset->training_labels[i]] = 1; 
+        output[dataset->training_labels[i]] = 0.5; 
         net.train_on_example(input, output); 
 
-        if(jk % 60 == 0){
-            net.update_weights(0.6); 
+        if(jk % 2 == 0){
+            net.update_weights(0.1); 
         }
         
 

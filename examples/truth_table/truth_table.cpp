@@ -10,7 +10,9 @@
  * @note
  *      to compile:
  *          g++ examples/truth_table/truth_table.cpp src/ff/* -Ofast -o bin/truth_table_example
- *
+ *      to run:
+ *          ./bin/truth_table_example
+ * 
  */
 
 #include "../../include/utils.h"
@@ -166,7 +168,7 @@ int main()
 
     std::cout << "Training complete!\n" << std::endl;
 
-    // Step 6: Test and print the test results
+    // Retest the net after training 
     results = net.test(examples, examples, expect, expect, outputcmp, &test_config);
     std::cout << "Post-training results" << std::endl; 
     std::cout << results << std::endl;
