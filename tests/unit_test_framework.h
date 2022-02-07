@@ -86,7 +86,7 @@ private:
     TestSuite() {
         auto func = []() {
             if (TestSuite::incomplete) {
-                std::cout << "ERROR: premature call to exit()" << std::endl;
+                std::cout << "\e[1;35mERROR\e[0m: premature call to exit()" << std::endl;
                 std::abort();
             }
         };
@@ -420,14 +420,14 @@ void TestCase::run(bool quiet_mode) {
         test_func();
 
         if (not quiet_mode) {
-            std::cout << "PASS" << std::endl;
+            std::cout << "\e[1;32mPASS\e[0m" << std::endl;
         }
     }
     catch (TestFailure& failure) {
         failure_msg = failure.to_string();
 
         if (not quiet_mode) {
-            std::cout << "FAIL" << std::endl;
+            std::cout << "\e[1;31mFAIL\e[0m" << std::endl;
         }
     }
     catch (std::exception& e) {
@@ -438,7 +438,7 @@ void TestCase::run(bool quiet_mode) {
         exception_msg = oss.str();
 
         if (not quiet_mode) {
-            std::cout << "ERROR" << std::endl;
+            std::cout << "\e[1;35mERROR\e[0m" << std::endl;
         }
     }
 }
@@ -452,19 +452,19 @@ void TestCase::print(bool quiet_mode) {
     }
 
     if (not failure_msg.empty()) {
-        std::cout << "FAIL" << std::endl;
+        std::cout << "\e[0mFAIL\e[0m" << std::endl;
         if (not quiet_mode) {
             std::cout << failure_msg << std::endl;
         }
     }
     else if (not exception_msg.empty()) {
-        std::cout << "ERROR" << std::endl;
+        std::cout << "\e[1;35mERROR\e[0m" << std::endl;
         if (not quiet_mode) {
             std::cout << exception_msg << std::endl;
         }
     }
     else {
-        std::cout << "PASS" << std::endl;
+        std::cout << "\e[1;32mPASS\e[0m" << std::endl;
     }
 }
 

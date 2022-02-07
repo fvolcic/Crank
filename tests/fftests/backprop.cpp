@@ -152,17 +152,59 @@ TEST(test_update_net_2){
     net.update_weights(1, true); 
 
     // for neuron[2][0] 
+
+    // Ignore the errors in VSCode
+    // You will compile with the debug flag
+    // whch allows for use of private variables
     ASSERT_ALMOST_EQUAL( net.neurons[2][0].getBias(), 0.5 - (-0.0703823097243 + 0.279533708405)/2, 0.00000001 );
     ASSERT_ALMOST_EQUAL( net.neurons[2][0].getWeights()[0], 0.5 - (-0.0575427800061 + 0.1739983651) / 2, 0.0000001 ); 
 
     ASSERT_ALMOST_EQUAL( net.neurons[1][0].getBias(), 0.5 - (-0.0104972717839 + 0.0656914591606) / 2, 0.00000001);
 
-    // TODO: Check this. Apparently this is working now. 
-
     ASSERT_ALMOST_EQUAL( net.neurons[1][0].getWeights()[1], 0.5 - (-0.0104972717839 + 0) / 2, 0.00000001); 
     ASSERT_ALMOST_EQUAL( net.neurons[1][0].getWeights()[0], 0.5 - (-0.0104972717839 + 0) / 2, 0.00000001); 
     ASSERT_EQUAL( net.neurons[1][0].get_dLoss_dWeight()[0], 0); 
     ASSERT_EQUAL( net.neurons[1][0].get_dLoss_dWeight()[1], 0); 
+
+}
+
+TEST(batch_size_3_test){
+    int num_layers = 3;
+    std::vector<int> neuron_counts = {2, 2, 2};
+    std::vector<std::vector<std::vector< double >>> weights = {
+                                                             {{}}, // No weights for layer 1
+                                                             {{ 0.5, 0.5 }, { 0.5, 0.5 }}, // Weights going into layer 2
+                                                             {{ 0.5, 0.5 }, { 0.5, 0.5 }}}; // Weights going into layer 3
+
+     std::vector< std::vector< double >> bias = { {},
+                                                { 0.5, 0.5 }, // Bias for neurons in layer 1
+                                                { 0.5, 0.5 }}; // Bias for neurons in layer 2
+
+    NeuralNetworkFF net(num_layers, neuron_counts, weights, bias);
+
+    std::vector< double > sample_input_1 = {1, 1};
+    std::vector< double > sample_output_1 = {1, 1};
+
+    std::vector< double > sample_input_2 = {0.2, 0.3};
+    std::vector< double > sample_output_2 = {0.4, 0.5}; 
+
+    std::vector< double > sample_input_3 = {0.5, 0.7}; 
+    std::vector < double > sample_output_3 = {0.8, 0.2}; 
+
+    net.train_on_example( sample_input_1, sample_output_1 );
+    net.train_on_example( sample_input_2, sample_output_2 ); 
+    net.train_on_example( sample_input_3, sample_output_3 ); 
+
+    ASSERT_EQUAL(net.neurons[1][0].num_examples_dBias, 3);
+    ASSERT_EQUAL(net.neurons[1][0].num_examples_dWeight, 3); 
+
+    net.update_weights(1, true); 
+    
+    ASSERT_ALMOST_EQUAL( net.neurons[1][0].getWeights()[0], 0.5 - (-0.0104972717839 + 0.00493545474415 + 0.00899427909599) / 3, 0.00000001); 
+
+    ASSERT_EQUAL(net.neurons[1][0].num_examples_dBias, 0);
+    ASSERT_EQUAL(net.neurons[1][0].num_examples_dWeight, 0); 
+
 }
 
 TEST_MAIN()
