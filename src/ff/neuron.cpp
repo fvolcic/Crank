@@ -9,6 +9,9 @@
  * 
  */
 
+#ifndef NEURON_CPP
+#define NEURON_CPP
+
 #include "../../include/ff/neuron.h"
 #include "../../include/ff/sigmoid.h"
 
@@ -206,3 +209,5 @@ void Neuron::update_weights_bias(double learning_weight, bool reset){
         num_examples_dWeight = 0;
     
 }
+
+#endif

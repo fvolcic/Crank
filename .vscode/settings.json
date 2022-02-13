@@ -49,6 +49,9 @@
     },
     "cSpell.words": [
         "MNIST",
-        "Ofast"
+        "Ofast",
+        "repr",
+        "stod",
+        "stoi"
     ]
 }

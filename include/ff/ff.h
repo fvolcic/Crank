@@ -9,6 +9,9 @@
  *
  */
 
+#ifndef FF_H
+#define FF_H
+
 #include "activation.h"
 #include "learning_functions.h"
 #include "neuron.h"
@@ -54,6 +57,13 @@ public:
     * @param network - Neural Network that you want copied
     */
    NeuralNetworkFF(const NeuralNetworkFF &network);
+
+   /**
+    * @brief Create a network from an external representation using a istream (ifstream, istream)
+    * 
+    * @param is 
+    */
+   NeuralNetworkFF(std::istream & is);
 
    /**
     * @brief Destroy the Neural Network object
@@ -107,6 +117,22 @@ public:
     */
    NeuralNetworkFF() = delete; // No default constructed neural network
 
+
+   /**
+    * @brief Get the external representation of a neural network. This is a representation that
+    *       can be used to reconstruct the neural network exactly
+    * 
+    * @param os 
+    */
+   void to_external_repr(std::ostream & os);
+
+   /**
+    * @brief Save the neural network to an output file
+    * 
+    * @param filename 
+    */
+   void save_to_file(std::string filename); 
+   
    /**
     * @brief Extra configuration settings for the train function
     *
@@ -316,3 +342,12 @@ private:
 
    int maxLayerSize = -1; // The layer in the network with the most neurons
 };
+
+#include "../../src/ff/ff.cpp"
+#include "../../src/ff/activation.cpp"
+#include "../../src/ff/neuron.cpp"
+#include "../../src/ff/sigmoid.cpp"
+#include "../../src/ff/output_ff.cpp"
+#include "../../src/ff/read_ff.cpp"
+
+#endif

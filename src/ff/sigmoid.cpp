@@ -9,8 +9,12 @@
  * 
  */
 
+#ifndef SIGMOID_CPP
+#define SIGNOID_CPP
+
 #include "../../include/ff/sigmoid.h"
 #include <cmath>
+#include <string>
 
 double Sigmoid::compute(double x){
     return 1 / (1 + exp(-x)); 
@@ -25,5 +29,11 @@ double Sigmoid::derivative(double x){
     return s * (1 - s); // derivate of sigmoid S(X) is S(X) * (1 - S(X)) 
 }
 
+std::string Sigmoid::to_external_repr(){
+    return "Sigmoid"; 
+}
+
 Sigmoid::Sigmoid(){}
 Sigmoid::~Sigmoid(){}
+
+#endif

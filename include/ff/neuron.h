@@ -9,6 +9,9 @@
  * 
  */
 
+#ifndef NEURON_H
+#define NEURON_H
+
 #include <vector>
 #include "activation.h"
 // #include "ff.h"
@@ -99,6 +102,16 @@ public:
      */
     double getBias();
     
+    /**
+     * @brief set the weight of the weight at index weight_index
+     * 
+     * @param weight_index 
+     * @param weight 
+     */
+    inline void setWeight(int weight_index, double weight){
+        weights[weight_index] = weight; 
+    } 
+
     /**
      * @brief Set the Weights object
      * 
@@ -225,6 +238,7 @@ public:
      */
     void update_weights_bias(double learning_rate, bool reset = true);
 
+
 #ifndef NN_DEBUG
 private:
 #endif
@@ -253,3 +267,5 @@ private:
     std::vector<double> dLoss_dWeight; 
 
 };
+
+#endif

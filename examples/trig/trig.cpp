@@ -9,8 +9,10 @@
  *
  * @note
  *      to compile:
- *          g++ examples/trig/trig.cpp src/ff/* -Ofast -o bin/trip_example
- *
+ *          g++ examples/trig/trig.cpp -Ofast -o bin/trig_example
+ *      
+ *      to run:
+ *          ./bin/trig_example    
  */
 
 #include "../../include/utils.h"
@@ -141,11 +143,11 @@ int main()
 
     // Step 3: Set up the training configuration 
     NeuralNetworkFF::TrainConfig train_config;
-    train_config.batch_size = 60; 
+    train_config.batch_size = 1; 
     train_config.learning_function = new ConstantLearningFunction(0.1);
     train_config.verbose = false; 
     train_config.verbose_count = 1000;
-    train_config.num_training_examples = 10000;
+    train_config.num_training_examples = 100000;
 
     // Step 4: Train
     net.train(examples, examples, expect, expect, &train_config);

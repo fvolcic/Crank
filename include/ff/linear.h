@@ -9,9 +9,12 @@
  * 
  */
 
+#ifndef IDENTITY_H
+#define IDENTITY_H
+
 #include "activation.h"
 
-class Identity : public ActivationBase
+class Linear : public ActivationBase
 {
 
 public:
@@ -42,3 +45,5 @@ public:
 
 private:
 };
+
+#endif

@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  * 
  * @note To compile:                            
- *      g++ examples/MNIST/mnist_nn.cpp src/mnist/* src/ff/* -o bin/mnist_nn_example
+ *      g++ examples/MNIST/mnist_nn.cpp src/mnist/* -o bin/mnist_nn_example
  *       To run:
  *      ./bin/mnist_nn_example
  */
@@ -37,38 +37,62 @@ int main(){
     MNIST_DATASET * dataset = read_dataset(); // Read the dataset from memory
 
     int num_layers = 3;
-    std::vector<int> neuron_counts = {784, 128, 10};
+    std::vector<int> neuron_counts = {784, 5, 10};
     NeuralNetworkFF net(num_layers, neuron_counts); 
 
-    for(int jk = 0; jk < dataset->training_images.size()/8; ++jk){
+    // net.to_external_repr(std::cout); 
+
+    for(int q = 0; q < 6; ++q){
+    for(int jk = 0; jk < dataset->training_images.size() ; ++jk){
 
         // int i = (int) floor( dataset->test_labels.size() * random_range2(0, 1) ); 
-        int i = jk; 
+        //int i = jk; 
+        int i = 0; 
         std::vector<double> input; 
         for(int j = 0; j < dataset->training_images[i].size(); ++j){ 
             input.push_back(dataset->training_images[i][j]);
         }
         std::vector<double> output(10, 0);
-        output[dataset->training_labels[i]] = 0.5; 
+        output[dataset->training_labels[i]] = 1; 
         net.train_on_example(input, output); 
 
-        if(jk % 2 == 0){
+        if(jk % 60 == 0){
             net.update_weights(0.1); 
         }
         
 
-        if(jk % 100 == 0){
+        if(jk % 300000 == 0){
             std::cout << "Trained on " << jk << " examples | " << dataset->training_images.size() - jk << " Remaining " << std::endl;
             
         }
 
-    }
+    }}
+
+    cout << "\n\n\n##################AFTER####################\n\n\n";
+
+    net.to_external_repr(std::cout); 
+
+    /*
 
     std::cout << "Testing Phase!" << std::endl; 
 
     int examples = 0;
     int correct = 0;
 
+    std::vector<double> input; 
+        for(int j = 0; j < dataset->training_images[0].size(); ++j){ 
+            input.push_back(dataset->training_images[0][j]);
+        }
+    std::vector<double> output; 
+    net.forwardPass(input, output); 
+    
+    for(auto number : output)
+        std::cout << number << " ";
+    std::cout << std::endl << std::endl;
+
+    std::cout << (int)dataset->training_labels[0] << std::endl; 
+    */
+    /*
     for(int i = 0; i < 40; ++i){
         std::vector<double> input; 
         for(int j = 0; j < dataset->test_images[i].size(); ++j){ 
@@ -102,5 +126,5 @@ int main(){
     }
 
     std::cout << "Correct Rate " << ((double) correct / (double) examples) << std::endl; 
-
+    */
 }

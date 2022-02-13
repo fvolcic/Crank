@@ -9,7 +9,12 @@
  * 
  */
 
+#ifndef ACTIVATION_CPP
+#define ACTIVATION_CPP
+
 #include "../../include/ff/activation.h"
 
 ActivationBase::ActivationBase(){}
 ActivationBase::~ActivationBase(){}
+
+#endif
