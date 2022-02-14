@@ -66,6 +66,13 @@ public:
    NeuralNetworkFF(std::istream & is);
 
    /**
+    * @brief Read NN from file
+    * 
+    * @param filename - file to read from
+    */
+   inline NeuralNetworkFF(std::string filename);
+
+   /**
     * @brief Destroy the Neural Network object
     *
     */

@@ -1,28 +1,23 @@
 /**
- * @file trig.cpp
- *
- * @brief This is an example training on an XOR gate (Not linearly seperable)
+ * @file file_read.cpp
+ * 
+ * @brief This program showcases how one would go about reading in a net from a net file
  * @version 0.1
- * @date 2022-01-28
- *
+ * @date 2022-02-13
+ * 
  * @copyright Copyright (c) 2022
- *
- * @note
+ * 
+ * @note 
  *      to compile:
- *          g++ examples/truth_table/truth_table.cpp -Ofast -o bin/truth_table_example
- *      to run:
- *          ./bin/truth_table_example
+ *          g++ examples/file_io/file_read.cpp -o bin/file_read
  * 
  */
 
-#include "../../include/utils.h"
 #include "../../include/ff/ff.h"
-#include "../../include/ff/learning_functions.h"
-#include <vector>
-#include <cmath>
-#include <iostream>
+#include <vector> 
+#include <iostream> 
 
-// The value which the truth table is taking on
+
 double valueA = 0;
 double valueB = 0; 
 
@@ -134,63 +129,18 @@ public:
     }
 };
 
-int main()
-{
+int main(){
+    NeuralNetworkFF net("truth_table.net"); 
 
-    // Step 1: Create the neural network with random weights and bias'
-    int num_layers = 3;
-    std::vector<int> neuron_counts = {2, 2, 1};
-    NeuralNetworkFF net(num_layers, neuron_counts);
-
-    net.to_external_repr(std::cout); 
-
-    // Step 2: Create the examples and expectation iterators 
     ExampleIterator examples;
     ExpectIterator expect;
 
-    // Set up testing params for pre-testing
     OutputCmp outputcmp;
     NeuralNetworkFF::TestConfig test_config;
     test_config.max_examples = 10000;
 
     NeuralNetworkFF::TestResults results = net.test(examples, examples, expect, expect, outputcmp, &test_config);
-    std::cout << "Pre-training results" << std::endl; 
+
     std::cout << results << std::endl;
-
-    // Step 3: Set up the training configuration 
-    NeuralNetworkFF::TrainConfig train_config;
-    train_config.batch_size = 1; // TODO Seems like when batch size is > 2, training completely fails
-    train_config.learning_function = new ConstantLearningFunction(0.1);
-    train_config.verbose = false; 
-    train_config.verbose_count = 10000;
-    train_config.num_training_examples = 60000;
-
-    // Step 4: Train
-    net.train(examples, examples, expect, expect, &train_config);
-
-    std::cout << "Training complete!\n" << std::endl;
-
-    // Retest the net after training 
-    results = net.test(examples, examples, expect, expect, outputcmp, &test_config);
-    std::cout << "Post-training results" << std::endl; 
-    std::cout << results << std::endl;
-
-    while(false){
-
-        double value1, value2;
-
-        std::cout << "Please input value 1: ";
-        std::cin >> value1;
-        std::cout << "Please input value 2: ";
-        std::cin >> value2; 
-
-        std::vector< double > input = {value1, value2}; 
-        std::vector < double > output = net.forwardPass(input); 
-
-        std::cout << "\n Predicted " << output[0] << "\n" << std::endl;
-
-    }
-
-    net.to_external_repr(std::cout); 
 
 }

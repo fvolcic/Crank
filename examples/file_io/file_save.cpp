@@ -1,15 +1,15 @@
 /**
- * @file trig.cpp
+ * @file file_save.cpp
  *
  * @brief This is an example training on an XOR gate (Not linearly seperable)
  * @version 0.1
- * @date 2022-01-28
+ * @date 2022-02-13
  *
  * @copyright Copyright (c) 2022
  *
  * @note
  *      to compile:
- *          g++ examples/truth_table/truth_table.cpp -Ofast -o bin/truth_table_example
+ *          g++ examples/file_io/file_save.cpp -Ofast -o bin/truth_table_example
  *      to run:
  *          ./bin/truth_table_example
  * 
@@ -175,22 +175,9 @@ int main()
     std::cout << "Post-training results" << std::endl; 
     std::cout << results << std::endl;
 
-    while(false){
+    // Save the network to the file "truth_table.net"
+    net.save_to_file("examples/file_io/truth_table.net"); 
 
-        double value1, value2;
-
-        std::cout << "Please input value 1: ";
-        std::cin >> value1;
-        std::cout << "Please input value 2: ";
-        std::cin >> value2; 
-
-        std::vector< double > input = {value1, value2}; 
-        std::vector < double > output = net.forwardPass(input); 
-
-        std::cout << "\n Predicted " << output[0] << "\n" << std::endl;
-
-    }
-
-    net.to_external_repr(std::cout); 
+    std::cout << "Saved network to examples/file_io/truth_table.net" << std::endl; 
 
 }

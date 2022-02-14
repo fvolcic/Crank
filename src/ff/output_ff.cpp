@@ -20,6 +20,9 @@
 #include <string> 
 #include <vector> 
 #include <iostream> 
+#include <fstream>
+
+using namespace std; 
 
 void NeuralNetworkFF::to_external_repr(std::ostream & os){
 
@@ -54,6 +57,20 @@ void NeuralNetworkFF::to_external_repr(std::ostream & os){
         }
             os << "\nend layer\n\n";
     }
+
+}
+
+void NeuralNetworkFF::save_to_file(std::string filename){
+    ofstream outfile; 
+    outfile.open(filename); 
+
+    if(!outfile){
+        cerr << "Error: Could not open " << filename << endl; 
+        exit(1); 
+    }
+
+    // If no error, output network to file
+    to_external_repr(outfile);
 
 }
 

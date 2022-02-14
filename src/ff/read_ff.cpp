@@ -16,10 +16,10 @@
 #include "../../include/ff/neuron.h"
 #include "../../include/ff/activation.h"
 #include "../../include/utils.h"
-#include <istream> 
 #include <string> 
 #include <vector> 
 #include <iostream> 
+#include <fstream>
 
 using namespace std; 
 
@@ -148,5 +148,20 @@ vector<Neuron> parse_layer_from_is(istream & is, int prev_layer_size){
     return {}; 
 
 }
+
+static std::ifstream INFILE_g; 
+std::ifstream & file_helper(std::string filename){
+    INFILE_g.open(filename);
+
+    if(!INFILE_g.is_open()){
+        std::cerr << "Error: could not open file " << filename << endl; 
+        exit(1); 
+    }
+
+    return INFILE_g; 
+
+}
+NeuralNetworkFF::NeuralNetworkFF(std::string filename) : NeuralNetworkFF(INFILE_g)
+{}
 
 #endif
