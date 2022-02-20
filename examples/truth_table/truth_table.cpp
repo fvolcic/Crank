@@ -139,10 +139,8 @@ int main()
 
     // Step 1: Create the neural network with random weights and bias'
     int num_layers = 3;
-    std::vector<int> neuron_counts = {2, 2, 1};
+    std::vector<int> neuron_counts = {2, 3, 1};
     NeuralNetworkFF net(num_layers, neuron_counts);
-
-    net.to_external_repr(std::cout); 
 
     // Step 2: Create the examples and expectation iterators 
     ExampleIterator examples;
@@ -190,7 +188,5 @@ int main()
         std::cout << "\n Predicted " << output[0] << "\n" << std::endl;
 
     }
-
-    net.to_external_repr(std::cout); 
 
 }

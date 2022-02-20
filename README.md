@@ -22,9 +22,7 @@ and a large set of examples
 
 ## Usage/Examples
 
-To get started, first clone the repo, and then you will find a plethora of examples in the examples folder. Most of the code you will need to use the library can be found in 
-include/ff/*
-
+To get started, first clone the repo, and then you will find a plethora of examples in the examples folder. To use Crank, simply just include "include/crank.h" into your project, and you're ready to go. 
 
 
 

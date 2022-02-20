@@ -1,0 +1,6 @@
+#include "ff/ff.h"
+#include "ff/activation.h"
+#include "ff/learning_functions.h"
+#include "ff/sigmoid.h"
+#include "ff/neuron.h"
+#include "ff/linear.h"
