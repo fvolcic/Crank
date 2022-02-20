@@ -24,3 +24,4 @@ using MNIST_DATASET = mnist::MNIST_dataset<std::vector, std::vector<uint8_t>, ui
  */
 MNIST_DATASET * read_dataset();
 
+#include "../../src/mnist/mnist.cpp"

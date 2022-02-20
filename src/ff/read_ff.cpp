@@ -30,6 +30,17 @@ NeuralNetworkFF::NeuralNetworkFF(std::istream & is){
     string line;
     is >> std::ws; // remove unwanted leading whitespace  
 
+    is >> line >> line >> line; 
+
+    std::cout << "here" << std::endl; 
+
+    while(is >> line){
+        
+        std::cout << line << endl; 
+    }
+
+    getline(is, line, '\n'); 
+
     // Run this loop while there is data left in the input stream 
     while( getline(is, line, '\n') && line.length() ){
 
@@ -76,13 +87,13 @@ vector<Neuron> parse_layer_from_is(istream & is, int prev_layer_size){
         
         if(split_str[0] == "def"){
             cerr << "Error: Unclosed layer before new layer definition." << endl; 
-            exit(1);
+            ::exit(1);
         }
         
         else if(split_str[0] == "neurons"){
             if(size_set){
                 cerr << "Size already set" << endl;
-                exit(1); 
+                ::exit(1); 
             }
 
             size_set = true; 

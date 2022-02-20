@@ -9,6 +9,9 @@
  * 
  */
 
+#ifndef MNIST_READ_CPP
+#define MNIST_READ_CPP
+
 #include "../../include/mnist/mnist.h"
 
 MNIST_DATASET * read_dataset(){
@@ -17,3 +20,5 @@ MNIST_DATASET * read_dataset(){
 
     return new MNIST_DATASET(dataset); // ineffient :)
 }
+
+#endif 
