@@ -1,0 +1,18 @@
+This file defines a syntax for network representation files
+
+# This is a comment
+
+# Layers must be defined IN ORDER 
+
+# All lines will have the form <line type> <line params...> 
+
+# This defines the layer that we are currently providing definitions for
+def layer
+
+neurons <layer neuron count> 
+neuron <index> bias <bias>
+neuron <index> weights <W_1> <W_2> ... <W_n> # Takes a list of weights and sets each one for the neuron 
+neuron <index> weight <weight index> <weight> 
+neuron <index> activation <Activation Function> ... < activation function params (if needed) >
+
+end layer

@@ -1,28 +1,25 @@
 /**
- * @file trig.cpp
- *
- * @brief This is a detailed example on how to train and test the neural network using the training and teting func
+ * @file file_read.cpp
+ * 
+ * @brief This program showcases how one would go about reading in a net from a net file
  * @version 0.1
- * @date 2022-01-28
- *
+ * @date 2022-02-13
+ * 
  * @copyright Copyright (c) 2022
- *
- * @note
+ * 
+ * @note 
  *      to compile:
- *          g++ examples/trig/trig.cpp -Ofast -o bin/trig_example
- *      
- *      to run:
- *          ./bin/trig_example    
+ *          g++ examples/file_io/file_read.cpp -o bin/file_read
+ * 
  */
 
-#include "../../include/utils.h"
 #include "../../include/ff/ff.h"
-#include "../../include/ff/learning_functions.h"
-#include <vector>
-#include <cmath>
-#include <iostream>
+#include <vector> 
+#include <iostream> 
 
-double value = 0;
+
+double valueA = 0;
+double valueB = 0; 
 
 /**
  * @brief This is the ExampleIterator. It is used to provide examples for training the net 
@@ -60,7 +57,7 @@ public:
      */
     std::vector<double> operator*()
     {
-        return {value};
+        return {valueA, valueB};
     }
 };
 
@@ -77,7 +74,8 @@ public:
      */
     void operator+=(int val)
     {
-        value = random_range(0, 1);
+        valueA = round( random_range(0, 1) );
+        valueB = round( random_range(0, 1) );
     }
 
     /**
@@ -107,7 +105,9 @@ public:
      */
     std::vector<double> operator*()
     {
-        return {cos(value)};
+        if(valueA != valueB)
+            return {1}; 
+        return {0}; 
     }
 };
 
@@ -125,60 +125,22 @@ public:
      */
     bool operator()(const std::vector<double> &vec1, const std::vector<double> &vec2)
     {
-        return std::abs((double) vec2[0] - vec1[0]) < 0.01;
+        return (round(vec1[0]) == vec2[0]);
     }
 };
 
-int main()
-{
+int main(){
+    NeuralNetworkFF net("../examples/file_io/truth_table.net"); 
 
-    // Step 1: Create the neural network with random weights and bias'
-    int num_layers = 3;
-    std::vector<int> neuron_counts = {1, 3, 1};
-    NeuralNetworkFF net(num_layers, neuron_counts);
-
-    // Step 2: Create the examples and expectation iterators 
     ExampleIterator examples;
     ExpectIterator expect;
 
-    // Step 3: Set up the training configuration 
-    NeuralNetworkFF::TrainConfig train_config;
-    train_config.batch_size = 1; 
-    train_config.learning_function = new ConstantLearningFunction(0.1);
-    train_config.verbose = false; 
-    train_config.verbose_count = 1000;
-    train_config.num_training_examples = 100000;
-
-    // Step 4: Train
-    net.train(examples, examples, expect, expect, &train_config);
-
-    std::cout << "Training complete!\n" << std::endl;
-
-    // Step 5: Setup the testing configuration
     OutputCmp outputcmp;
     NeuralNetworkFF::TestConfig test_config;
-    test_config.max_examples = 1000;
+    test_config.max_examples = 10000;
 
-    // Step 6: Test and print the test results
     NeuralNetworkFF::TestResults results = net.test(examples, examples, expect, expect, outputcmp, &test_config);
+
     std::cout << results << std::endl;
-
-    // Step 7: Play around and see how well it was trained based on your training parameters
-    while(1){
-        std::cout << "Please enter a value in range [0, 1]! or -1 to quit: ";
-        double value;
-        std::cin >> value; 
-        if(value == -1){
-            break; 
-        }
-
-        std::vector<double> input = {value}; 
-        std::vector<double> output = net.forwardPass(input); 
-
-        std::cout << "Prediction: " << output[0] << " | Actual: " << cos(value) << "\n" << std::endl;
-
-    }
-
-    delete train_config.learning_function;
 
 }

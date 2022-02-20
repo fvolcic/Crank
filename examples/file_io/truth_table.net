@@ -1,0 +1,23 @@
+def layer
+neurons 2
+
+end layer
+
+def layer
+neurons 2
+
+neuron 0 bias 6.3041
+neuron 0 weights -4.2659 -4.25751 
+neuron 1 bias 2.4286
+neuron 1 weights -6.20138 -6.19249 
+
+end layer
+
+def layer
+neurons 1
+
+neuron 0 bias -3.98431
+neuron 0 weights 8.56554 -8.75133 
+
+end layer
+

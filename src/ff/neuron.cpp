@@ -9,6 +9,9 @@
  * 
  */
 
+#ifndef NEURON_CPP
+#define NEURON_CPP
+
 #include "../../include/ff/neuron.h"
 #include "../../include/ff/sigmoid.h"
 
@@ -45,15 +48,17 @@ void Neuron::setInput(double input)
     this->input = input;
 }
 
-void Neuron::computeInput(std::vector<double> previousLayer)
+void Neuron::computeInput(std::vector<double> previousLayer, int previousLayerSize)
 {
     double sum = 0;
-    for (int i = 0; i < previousLayer.size(); ++i)
+
+    for (int i = 0; i < previousLayerSize; ++i)
     {
         sum += previousLayer[i] * weights[i];
     }
     sum += bias;
     input = sum;
+
     activation = (*activationBase).compute(sum);
 }
 
@@ -206,3 +211,5 @@ void Neuron::update_weights_bias(double learning_weight, bool reset){
         num_examples_dWeight = 0;
     
 }
+
+#endif

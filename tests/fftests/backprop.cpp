@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2022
  *
  * @note To compile:
- *          g++ tests/fftests/backprop.cpp src/ff/* -D NN_DEBUG -g3 -o bin/backprop_tests
+ *          g++ tests/fftests/backprop.cpp -D NN_DEBUG -g3 -o bin/backprop_tests
  *       To run:
  *          ./bin/backprop_tests
  *

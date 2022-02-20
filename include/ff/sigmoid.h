@@ -9,6 +9,9 @@
  * 
  */
 
+#ifndef SIGMOID_H
+#define SIGMOID_H
+
 #include "activation.h"
 
 class Sigmoid : public ActivationBase
@@ -43,5 +46,14 @@ public:
      */
     virtual double derivative(double x);
 
+    /**
+     * @brief the external repr of the Sigmoid
+     * 
+     * @return std::string 
+     */
+    virtual std::string to_external_repr();
+
 private:
 };
+
+#endif

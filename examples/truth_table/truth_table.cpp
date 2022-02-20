@@ -9,7 +9,7 @@
  *
  * @note
  *      to compile:
- *          g++ examples/truth_table/truth_table.cpp src/ff/* -Ofast -o bin/truth_table_example
+ *          g++ examples/truth_table/truth_table.cpp -Ofast -o bin/truth_table_example
  *      to run:
  *          ./bin/truth_table_example
  * 
@@ -142,6 +142,8 @@ int main()
     std::vector<int> neuron_counts = {2, 2, 1};
     NeuralNetworkFF net(num_layers, neuron_counts);
 
+    net.to_external_repr(std::cout); 
+
     // Step 2: Create the examples and expectation iterators 
     ExampleIterator examples;
     ExpectIterator expect;
@@ -157,11 +159,11 @@ int main()
 
     // Step 3: Set up the training configuration 
     NeuralNetworkFF::TrainConfig train_config;
-    train_config.batch_size = 3; // TODO Seems like when batch size is > 2, training completely fails
+    train_config.batch_size = 1; // TODO Seems like when batch size is > 2, training completely fails
     train_config.learning_function = new ConstantLearningFunction(0.1);
     train_config.verbose = false; 
-    train_config.verbose_count = 1000;
-    train_config.num_training_examples = 100000;
+    train_config.verbose_count = 10000;
+    train_config.num_training_examples = 60000;
 
     // Step 4: Train
     net.train(examples, examples, expect, expect, &train_config);
@@ -172,4 +174,23 @@ int main()
     results = net.test(examples, examples, expect, expect, outputcmp, &test_config);
     std::cout << "Post-training results" << std::endl; 
     std::cout << results << std::endl;
+
+    while(false){
+
+        double value1, value2;
+
+        std::cout << "Please input value 1: ";
+        std::cin >> value1;
+        std::cout << "Please input value 2: ";
+        std::cin >> value2; 
+
+        std::vector< double > input = {value1, value2}; 
+        std::vector < double > output = net.forwardPass(input); 
+
+        std::cout << "\n Predicted " << output[0] << "\n" << std::endl;
+
+    }
+
+    net.to_external_repr(std::cout); 
+
 }

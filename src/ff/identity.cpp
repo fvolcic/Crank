@@ -9,6 +9,9 @@
  * 
  */
 
+#ifndef IDENTITY_CPP
+#define IDENTITY_CPP
+
 #include "../../include/ff/identity.h"
 
 double Identity::compute(double x){
@@ -25,3 +28,5 @@ double Identity::operator()(double x){
 
 //Identity::Identity(){}
 //Identity::~Identity(){}
+
+#endif

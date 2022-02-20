@@ -9,7 +9,7 @@
  * 
  * 
  * @note To compile:
- *          g++ tests/fftests/fftests.cpp src/ff/* -g3 -o bin/fftests_test
+ *          g++ tests/fftests/fftests.cpp -g3 -o bin/fftests_test
  *       To run:
  *          ./bin/fftests_test
  * 
