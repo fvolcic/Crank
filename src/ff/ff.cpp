@@ -116,8 +116,8 @@ void NeuralNetworkFF::forwardPass(const std::vector<double> &input, std::vector<
     for (int i = 1; i < neurons.size(); ++i)
     {
         for (int j = 0; j < neurons[i].size(); ++j)
-        {
-            neurons[i][j].computeInput(intermediate_result);
+        {   
+            neurons[i][j].computeInput(intermediate_result, neurons[i - 1].size());
         }
 
         for (int j = 0; j < neurons[i].size(); ++j)
@@ -167,14 +167,6 @@ void NeuralNetworkFF::train_on_example(const std::vector<double> &input, const s
     for (int i = 0; i < output.size(); ++i)
     {
         double dLoss_dAct_val = 2 * (neurons.back()[i].getActivation() - expected_output[i]);
-
-        std::stringstream ss; 
-        ss << dLoss_dAct_val; 
-        std::string s = ss.str(); 
-
-        if(s.back() == 'n'){
-            std::cerr << "ERROR" << std::endl; 
-        }
 
         neurons.back()[i].set_dLoss_dActivation(dLoss_dAct_val);
     }

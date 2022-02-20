@@ -38,41 +38,39 @@ int main()
     MNIST_DATASET *dataset = read_dataset(); // Read the dataset from memory
 
     int num_layers = 3;
-    std::vector<int> neuron_counts = {784, 20, 10};
+    std::vector<int> neuron_counts = {784, 300, 10};
     NeuralNetworkFF net(num_layers, neuron_counts);
-
-    std::cout << "Neurons: " << net.neurons.size() << std::endl; 
 
     // net.to_external_repr(std::cout);
     net.save_to_file("out_prev.net");
-    for (int q = 0; q < 1; ++q)
+    for (int q = 0; q <1; ++q)
     {
-        for (int jk = 0; jk < dataset->training_images.size() / 60000; ++jk)
+        for (int jk = 0; jk < dataset->training_images.size(); ++jk)
         {
 
             // int i = (int) floor( dataset->test_labels.size() * random_range2(0, 1) );
-            // int i = jk;
-            int i = 0;
+            int i = jk;
+            // int i = 0;
             std::vector<double> input;
             for (int j = 0; j < dataset->training_images[i].size(); ++j)
             {
-                // input.push_back(dataset->training_images[i][j]);
-                if (dataset->training_images[i][j])
-                {
-                    input.push_back(1);
-                }
-                else
-                {
-                    input.push_back(0);
-                }
+                input.push_back(dataset->training_images[i][j]);
+                // if (dataset->training_images[i][j])
+                // {
+                //     input.push_back(1);
+                // }
+                // else
+                // {
+                //     input.push_back(0);
+                // }
             }
             std::vector<double> output(10, 0);
             output[dataset->training_labels[i]] = 1;
             net.train_on_example(input, output);
 
-            if (jk % 60 == 0)
+            if (jk % 500 == 0)
             {
-                net.update_weights(0.005);
+                net.update_weights(0.25);
             }
 
             if (jk % 3000 == 0)
@@ -94,14 +92,15 @@ int main()
     std::vector<double> input;
     for (int j = 0; j < dataset->training_images[0].size(); ++j)
     {
-        if (dataset->training_images[0][j])
-        {
-            input.push_back(1);
-        }
-        else
-        {
-            input.push_back(0);
-        }
+        input.push_back(dataset->training_images[0][j]); 
+        // if (dataset->training_images[0][j])
+        // {
+        //     input.push_back(1);
+        // }
+        // else
+        // {
+        //     input.push_back(0);
+        // }
     }
     std::vector<double> output;
     net.forwardPass(input, output);
@@ -113,18 +112,18 @@ int main()
 
     std::cout << (int)dataset->training_labels[0] << std::endl;
 
-    for (int i = 0; i < 40; ++i)
+    for (int i = 0; i < 400; ++i)
     {
         std::vector<double> input;
         for (int j = 0; j < dataset->test_images[i].size(); ++j)
         {
 
-            if (dataset->training_images[i][j])
-                input.push_back(1);
-            else
-                input.push_back(0);
+            //if (dataset->training_images[i][j])
+            //    input.push_back(1);
+            //else
+            //    input.push_back(0);
 
-            // input.push_back(dataset->test_images[i][j]);
+            input.push_back(dataset->test_images[i][j]);
         }
 
         std::vector<double> output;
@@ -142,18 +141,20 @@ int main()
         }
 
         std::cout << "Predicted " << prediction << " | Correct " << (int)dataset->test_labels[i] << std::endl;
-        std::cout << "Output: ";
+        //std::cout << "Output: ";
 
-        for (auto number : output)
-            std::cout << number << " ";
-        std::cout << std::endl
-                  << std::endl;
+        // for (auto number : output)
+        //     std::cout << number << " ";
+        // std::cout << std::endl
+        //           << std::endl;
 
         ++examples;
 
         if (prediction == (int)dataset->test_labels[i])
         {
             ++correct;
+        }else{
+            dataset->display_image(i, dataset->test_images); 
         }
     }
 

@@ -74,7 +74,7 @@ public:
      * 
      * @param previousLayer - vector of activations of the previous layer 
      */
-    void computeInput(std::vector<double> previousLayer);
+    void computeInput(std::vector<double> previousLayer, int previousLayerSize);
 
     /**
      * @brief get the output of a neuron after the activation function has been applied
