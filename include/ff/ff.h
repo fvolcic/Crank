@@ -60,14 +60,14 @@ public:
 
    /**
     * @brief Create a network from an external representation using a istream (ifstream, istream)
-    * 
-    * @param is 
+    *
+    * @param is
     */
-   NeuralNetworkFF(std::istream & is);
+   NeuralNetworkFF(std::istream &is);
 
    /**
     * @brief Read NN from file
-    * 
+    *
     * @param filename - file to read from
     */
    inline NeuralNetworkFF(std::string filename);
@@ -124,22 +124,21 @@ public:
     */
    NeuralNetworkFF() = delete; // No default constructed neural network
 
-
    /**
     * @brief Get the external representation of a neural network. This is a representation that
     *       can be used to reconstruct the neural network exactly
-    * 
-    * @param os 
+    *
+    * @param os
     */
-   void to_external_repr(std::ostream & os);
+   void to_external_repr(std::ostream &os);
 
    /**
     * @brief Save the neural network to an output file
-    * 
-    * @param filename 
+    *
+    * @param filename
     */
-   void save_to_file(std::string filename); 
-   
+   void save_to_file(std::string filename);
+
    /**
     * @brief Extra configuration settings for the train function
     *
@@ -278,8 +277,8 @@ public:
             ++num_correct;
          else
             ++num_incorrect;
-         examples_iter += 1; 
-         expect_iter += 1; 
+         examples_iter += 1;
+         expect_iter += 1;
       }
 
       // The testing return struct.
@@ -287,7 +286,7 @@ public:
       results.correct = num_correct;
       results.incorrect = num_incorrect;
       results.num_examples = num_correct + num_incorrect;
-      results.correct_rate = (double)num_correct / results.num_examples ;
+      results.correct_rate = (double)num_correct / results.num_examples;
 
       return results;
    }
@@ -304,6 +303,32 @@ protected:
 #ifndef NN_DEBUG
 private:
 #endif
+
+   
+   class thread_calculate_dLoss_dWeight{
+
+      public:
+
+         inline thread_calculate_dLoss_dWeight(NeuralNetworkFF & net, int layer, int range_start, int range_end)
+          : net(net),layer(layer), range_start(range_start), range_end(range_end){
+          }
+
+         inline void operator()(){
+
+            for(int i = range_start;i < range_end; ++i){ 
+               Neuron &neuron = net.neurons[layer][i]; 
+               net.calculate_dLoss_dWeight_and_dLoss_dBias(neuron, layer); 
+            }
+
+         }
+
+      private:
+         NeuralNetworkFF & net; 
+         int layer; 
+         int range_start; 
+         int range_end; 
+   };
+
 
    /**
     * @brief Run backprop on the network starting at layer layer

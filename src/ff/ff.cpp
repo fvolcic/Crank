@@ -19,6 +19,7 @@
 #include <iostream>
 #include <sstream>
 #include <cmath>
+#include <thread>
 
 std::vector<std::vector<double>> random_bias_helper(std::vector<int> neuron_counts)
 {
@@ -177,13 +178,45 @@ void NeuralNetworkFF::train_on_example(const std::vector<double> &input, const s
         Neuron &neuron = neurons.back()[i];
         neuron.set_dActivation_dInput(neuron.getActivationFunction()->derivative(neuron.getInput()));
     }
+   
+
+    int one_eighth =(int) std::floor( neurons[neurons.size() - 1].size() / 8.0); 
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight first(*this, neurons.size() - 1, 0, one_eighth); 
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight second(*this, neurons.size() - 1, one_eighth, 2 * one_eighth);
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight third(*this, neurons.size() - 1, 2 * one_eighth, 3 * one_eighth);
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight fourth(*this, neurons.size() - 1, 2 * one_eighth, 3 * one_eighth);
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight fifth(*this, neurons.size() - 1, 2 * one_eighth, 3 * one_eighth);
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight sixth(*this, neurons.size() - 1, 2 * one_eighth, 3 * one_eighth);
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight seventh(*this, neurons.size() - 1, 2 * one_eighth, 3 * one_eighth);
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight eighth(*this, neurons.size() - 1, 3 * one_eighth, neurons[neurons.size() - 1].size());
+
+    std::thread first_t (first); 
+    std::thread second_t (second); 
+    std::thread third_t (third);
+    std::thread fourth_t (fourth); 
+    std::thread fifth_t (fourth); 
+    std::thread sixth_t (fourth); 
+    std::thread seventh_t (fourth); 
+    std::thread eighth_t (fourth); 
+
+    first_t.join(); 
+    second_t.join(); 
+    third_t.join(); 
+    fourth_t.join(); 
+    fifth_t.join();
+    sixth_t.join(); 
+    seventh_t.join(); 
+    eighth_t.join(); 
+
 
     // Now compute derivate of the bias and the weights for the first layer in the neural network
-    for (int i = 0; i < output.size(); ++i)
-    {
-        Neuron &neuron = neurons.back()[i];
-        calculate_dLoss_dWeight_and_dLoss_dBias(neuron, neurons.size() - 1);
-    }
+    // for (int i = 0; i < output.size(); ++i)
+    // {
+    //     Neuron &neuron = neurons.back()[i];
+    //     calculate_dLoss_dWeight_and_dLoss_dBias(neuron, neurons.size() - 1);
+    // }
+
+   
 
     // Call the backprop to train rest of the network
     // TODO : Add condition small network of size 1 or 2 layers
@@ -208,12 +241,41 @@ void NeuralNetworkFF::back_propagation(int layer)
         // neuron.set_dActivation_dInput( neuron.getActivationFunction()->derivative( neuron.getInput() ));
     }
 
+
+    int one_eighth =(int) std::floor( neurons[layer].size() / 8.0); 
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight first(*this, layer, 0, one_eighth); 
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight second(*this, layer, one_eighth, 2 * one_eighth);
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight third(*this, layer, 2 * one_eighth, 3 * one_eighth);
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight fourth(*this, layer, 2 * one_eighth, 3 * one_eighth);
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight fifth(*this, layer, 2 * one_eighth, 3 * one_eighth);
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight sixth(*this, layer, 2 * one_eighth, 3 * one_eighth);
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight seventh(*this, layer, 2 * one_eighth, 3 * one_eighth);
+    NeuralNetworkFF::thread_calculate_dLoss_dWeight eighth(*this, layer, 3 * one_eighth, neurons[layer].size());
+
+    std::thread first_t (first); 
+    std::thread second_t (second); 
+    std::thread third_t (third);
+    std::thread fourth_t (fourth); 
+    std::thread fifth_t (fourth); 
+    std::thread sixth_t (fourth); 
+    std::thread seventh_t (fourth); 
+    std::thread eighth_t (fourth); 
+
+    first_t.join(); 
+    second_t.join(); 
+    third_t.join(); 
+    fourth_t.join(); 
+    fifth_t.join();
+    sixth_t.join(); 
+    seventh_t.join(); 
+    eighth_t.join(); 
+
     // Now compute derivate of the bias and the weights for the first layer in the neural network
-    for (int i = 0; i < neurons[layer].size(); ++i)
-    {
-        Neuron &neuron = neurons[layer][i];
-        calculate_dLoss_dWeight_and_dLoss_dBias(neuron, layer);
-    }
+    // for (int i = 0; i < neurons[layer].size(); ++i)
+    // {
+    //     Neuron &neuron = neurons[layer][i];
+    //     calculate_dLoss_dWeight_and_dLoss_dBias(neuron, layer);
+    // }
 
     if (layer != 1)
         back_propagation(layer - 1);
