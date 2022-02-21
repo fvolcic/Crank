@@ -3,4 +3,3 @@
 #include "ff/learning_functions.h"
 #include "ff/sigmoid.h"
 #include "ff/neuron.h"
-#include "ff/linear.h"
