@@ -1,12 +1,12 @@
 /**
  * @file read_ff.cpp
- * 
+ *
  * @brief Contains functionality for reading in a neural network from a stream
  * @version 0.1
  * @date 2022-02-12
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 
 #ifndef READ_FF_CPP
@@ -16,163 +16,171 @@
 #include "../../include/ff/neuron.h"
 #include "../../include/ff/activation.h"
 #include "../../include/utils.h"
-#include <string> 
-#include <vector> 
-#include <iostream> 
+#include <string>
+#include <vector>
+#include <iostream>
 #include <fstream>
 
-using namespace std; 
+using namespace std;
 
-vector<Neuron> parse_layer_from_is(istream & is, int prev_layer_size); 
+vector<Neuron> parse_layer_from_is(istream &is, int prev_layer_size);
 
-NeuralNetworkFF::NeuralNetworkFF(std::istream & is){
+NeuralNetworkFF::NeuralNetworkFF(std::istream &is)
+{
 
     string line;
-    is >> std::ws; // remove unwanted leading whitespace  
+    //is >> std::ws; // remove unwanted leading whitespace
 
-    is >> line >> line >> line; 
+    // Run this loop while there is data left in the input stream
+    while (is >> std::ws && getline(is, line, '\n') && line.length())
+    {
 
-    std::cout << "here" << std::endl; 
+        vector<string> split_str = split(line, ' ');
+        string command = split_str[0];
 
-    while(is >> line){
-        
-        std::cout << line << endl; 
-    }
-
-    getline(is, line, '\n'); 
-
-    // Run this loop while there is data left in the input stream 
-    while( getline(is, line, '\n') && line.length() ){
-
-        vector<string> split_str = split(line, ' '); 
-        string command = split_str[0]; 
-
-        // Skip line on comment 
-        if(command[0] == '#'){
-            continue; 
+        // Skip line on comment
+        if (command[0] == '#')
+        {
+            continue;
         }
 
         // Parse a new layer
-        if(command == "def"){
-            
+        if (command == "def")
+        {
+
             // Parse a layer
-            if(split_str.size() > 1 && split_str[1] == "layer"){
-                neurons.push_back(parse_layer_from_is(is, neurons.back().size() )); 
+            if (split_str.size() > 1 && split_str[1] == "layer")
+            {
+                if (neurons.size())
+                {
+                    neurons.push_back(parse_layer_from_is(is, neurons.back().size()));
+                }
+                else
+                {
+                    neurons.push_back(parse_layer_from_is(is, 0));
+                }
             }
-            else{
+            else
+            {
                 cerr << "Invalid definition. Try \"def layer\"" << endl;
-                exit(1); 
+                exit(1);
             }
         }
-
     }
-
-    
-
 }
 
-vector<Neuron> parse_layer_from_is(istream & is, int prev_layer_size){
+vector<Neuron> parse_layer_from_is(istream &is, int prev_layer_size)
+{
 
     string line;
-    is >> std::ws; // remove unwanted leading whitespace  
+    // is >> std::ws; // remove unwanted leading whitespace
 
-    bool size_set = false; 
-    int layer_size = 0; 
+    bool size_set = false;
+    int layer_size = 0;
 
-    vector<Neuron> neurons; 
+    vector<Neuron> neurons;
 
-    while(getline(is, line, '\n') && line.length()){
+    while (is >> std::ws && getline(is, line, '\n') && line.length())
+    {
 
-        vector<string> split_str = split(line, ' '); 
-        
-        if(split_str[0] == "def"){
-            cerr << "Error: Unclosed layer before new layer definition." << endl; 
+        vector<string> split_str = split(line, ' ');
+
+        if (split_str[0] == "def")
+        {
+            cerr << "Error: Unclosed layer before new layer definition." << endl;
             ::exit(1);
         }
-        
-        else if(split_str[0] == "neurons"){
-            if(size_set){
+
+        else if (split_str[0] == "neurons")
+        {
+            if (size_set)
+            {
                 cerr << "Size already set" << endl;
-                ::exit(1); 
+                ::exit(1);
             }
 
-            size_set = true; 
-            layer_size = stoi(split_str[1]); 
+            size_set = true;
+            layer_size = stoi(split_str[1]);
 
-            neurons.resize(layer_size); 
-
+            neurons.resize(layer_size);
         }
 
-        else if(split_str[0] == "neuron"){
-            int index = stoi(split_str[1]); 
-            
-            if(split_str[2] == "bias"){
-                neurons[index].setBias(stod(split_str[3])); 
+        else if (split_str[0] == "neuron")
+        {
+            int index = stoi(split_str[1]);
+
+            if (split_str[2] == "bias")
+            {
+                neurons[index].setBias(stod(split_str[3]));
             }
 
-            if(split_str[2] == "weights"){
-                if(split_str.size() != 3 + prev_layer_size){
+            if (split_str[2] == "weights")
+            {
+                if (split_str.size() != 3 + prev_layer_size)
+                {
                     cerr << "Invalid number of weights in neuron defintion\nLine: " << endl;
                     cerr << line;
                     exit(1);
                 }
 
-                vector<double> weights; 
+                vector<double> weights;
 
-                for(int i = 0; i < prev_layer_size; ++i){
-                    weights.push_back(stod(split_str[3 + i])); 
+                for (int i = 0; i < prev_layer_size; ++i)
+                {
+                    weights.push_back(stod(split_str[3 + i]));
                 }
 
-                neurons[index].setWeights(weights); 
-
+                neurons[index].setWeights(weights);
             }
 
-            if(split_str[2] == "weight"){
+            if (split_str[2] == "weight")
+            {
                 int weight_index = stoi(split_str[3]);
-                neurons[index].setWeight(weight_index, stod(split_str[4])); 
+                neurons[index].setWeight(weight_index, stod(split_str[4]));
             }
 
-            if(split_str[2] == "activation"){
-                if(split_str[3] == "linear"){
+            if (split_str[2] == "activation")
+            {
+                if (split_str[3] == "linear")
+                {
                     neurons[index].setActivationBase(new Linear(stod(split_str[4])));
                 }
             }
-
-            
-
         }
 
-        else if(split_str[0] == "end"){
-            if(split_str[1] == "layer"){
-                return neurons; 
+        else if (split_str[0] == "end")
+        {
+            if (split_str[1] == "layer")
+            {
+                return neurons;
             }
 
             cerr << "Error: Invalid close" << endl;
             cerr << "Line: " << line << endl;
-            exit(1); 
+            exit(1);
         }
-
     }
 
     cerr << "Error: Invalid file. Unfinished layer definition" << endl;
     exit(1);
-    return {}; 
-
+    return {};
 }
 
-static std::ifstream INFILE_g; 
-std::ifstream & file_helper(std::string filename){
+static std::ifstream INFILE_g;
+std::ifstream &file_helper(std::string filename)
+{
     INFILE_g.open(filename);
 
-    if(!INFILE_g.is_open()){
-        std::cerr << "Error: could not open file " << filename << endl; 
-        exit(1); 
+    if (!INFILE_g.is_open())
+    {
+        std::cerr << "Error: could not open file " << filename << endl;
+        exit(1);
     }
 
-    return INFILE_g; 
-
+    return INFILE_g;
 }
-NeuralNetworkFF::NeuralNetworkFF(std::string filename) : NeuralNetworkFF(INFILE_g)
-{}
+NeuralNetworkFF::NeuralNetworkFF(std::string filename) : NeuralNetworkFF(file_helper(filename))
+{
+}
 
 #endif

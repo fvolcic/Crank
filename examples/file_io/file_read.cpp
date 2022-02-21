@@ -130,7 +130,7 @@ public:
 };
 
 int main(){
-    NeuralNetworkFF net("../examples/file_io/truth_table.net"); 
+    NeuralNetworkFF net("examples/file_io/truth_table.net"); 
 
     ExampleIterator examples;
     ExpectIterator expect;
