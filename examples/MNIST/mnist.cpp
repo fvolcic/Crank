@@ -67,7 +67,7 @@ public:
     {
         for (int i = 0; i < 784; ++i)
         {
-            example[i] = (*images)[example_index][i];
+            example[i] = (*images)[example_index][i] ? 1 : 0;
         }
 
         return example;
@@ -191,8 +191,8 @@ int main()
 
     // Step 3: Set up the training configuration
     NeuralNetworkFF::TrainConfig train_config;
-    train_config.batch_size = 60;
-    train_config.learning_function = new ConstantLearningFunction(0.35);
+    train_config.batch_size = 50;
+    train_config.learning_function = new ConstantLearningFunction(0.25);
     train_config.verbose = true;
     train_config.verbose_count = 5000;
     train_config.num_training_examples = 60000;
@@ -202,19 +202,6 @@ int main()
     labels = &dataset->training_labels; 
     example_index = 0;  
     std::cout << "Training Run 1 | Learnings Rate 0.35" << std::endl; 
-    net.train(examples, examples_end, expect, expect_end, &train_config);
-
-    example_index = 0;
-    delete train_config.learning_function; 
-    train_config.learning_function = new ConstantLearningFunction(0.1);
-    std::cout << "Training Run 2 | Learnings Rate 0.1" << std::endl; 
-    net.train(examples, examples_end, expect, expect_end, &train_config);
-
-
-    example_index = 0;
-    delete train_config.learning_function; 
-    train_config.learning_function = new ConstantLearningFunction(0.01);
-    std::cout << "Training Run 3 | Learnings Rate 0.01" << std::endl; 
     net.train(examples, examples_end, expect, expect_end, &train_config);
 
     std::cout << "Training complete!\n"
