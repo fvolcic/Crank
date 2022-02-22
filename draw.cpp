@@ -1,3 +1,23 @@
+/**
+ * @file draw.cpp
+ * @author
+ * @brief This file lets you draw a number real time and see what is predicted. 
+ * @version 0.1
+ * @date 2022-02-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ *  To compile: 
+ *      g++ -std=c++11 draw.cpp -o sketch -Iinclude -Llib -lxd -lglad -lglfw3 -lrt -lm -ldl -lX11 -lpthread
+ *  
+ * Copy a trained number neural network to same folder named "trained.net" 
+ *      (This can be constructed via examples/MNIST/mnist.cpp)
+ * 
+ *     run: 
+ *         ./sketch
+ * 
+ */
+
 #include <xd/xd.hpp>
 #include <vector>
 #include "../include/crank.h"
@@ -47,8 +67,16 @@ int make_prediction(std::vector<std::vector<bool>> & pix){
         }
     }
     std::cout << std::endl; 
-    return max_index + 1; 
+    return max_index; 
 
+}
+
+void onKeyPressed(int key){
+    for(int i = 0; i < 28; ++i){
+        for(int j = 0; j < 28; ++j){
+        mypixels[i][j] = false; 
+        }
+    }
 }
 
 void onMouseMoved(float x, float y)
@@ -74,6 +102,7 @@ void setup()
     mouseReleased(onMouseReleased);
     mouseMoved(onMouseMoved);
     mousePressed(onMousePressed);
+    keyPressed(onKeyPressed); 
     size(cols, rows);
 }
 
