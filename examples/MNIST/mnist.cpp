@@ -67,7 +67,7 @@ public:
     {
         for (int i = 0; i < 784; ++i)
         {
-            example[i] = (*images)[example_index][i] ? 1 : 0;
+            example[i] = (*images)[example_index][i];
         }
 
         return example;
@@ -169,8 +169,8 @@ int main()
     dataset = read_dataset(); // Read MNIST from memory
     
     // Step 1: Create the neural network with random weights and bias'
-    int num_layers = 3;
-    std::vector<int> neuron_counts = {784, 300, 10};
+    int num_layers = 2;
+    std::vector<int> neuron_counts = {784, 10};
     NeuralNetworkFF net(num_layers, neuron_counts);
 
     // Step 2: Create the examples and expectation iterators
@@ -191,8 +191,8 @@ int main()
 
     // Step 3: Set up the training configuration
     NeuralNetworkFF::TrainConfig train_config;
-    train_config.batch_size = 50;
-    train_config.learning_function = new ConstantLearningFunction(0.25);
+    train_config.batch_size = 10;
+    train_config.learning_function = new ConstantLearningFunction(0.05);
     train_config.verbose = true;
     train_config.verbose_count = 5000;
     train_config.num_training_examples = 60000;
@@ -218,7 +218,7 @@ int main()
     std::cout << "Post Training Results" << std::endl; 
     std::cout << results << std::endl;
 
-    net.save_to_file("examples/MNIST/trained.net");
+    net.save_to_file("trained.net");
 
     delete train_config.learning_function;
 }
