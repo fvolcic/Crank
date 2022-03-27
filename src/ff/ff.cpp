@@ -34,8 +34,8 @@ std::vector<std::vector<double>> random_bias_helper(std::vector<int> neuron_coun
     {
         for (int j = 0; j < output[i].size(); ++j)
         {
-            //output[i][j] = random_range(-0.05, 0.05);
-            output[i][j] = 0;
+            output[i][j] = random_range(-0.1, 0.1);
+            //output[i][j] = 0;
         }
     }
 

@@ -173,6 +173,8 @@ int main()
     std::cout << "Post-training results" << std::endl; 
     std::cout << results << std::endl;
 
+    net.save_to_file("TT_Grad_descent");
+
     while(false){
 
         double value1, value2;
