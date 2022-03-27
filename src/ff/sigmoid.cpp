@@ -33,6 +33,10 @@ std::string Sigmoid::to_external_repr(){
     return "Sigmoid"; 
 }
 
+ActivationBase * Sigmoid::clone(){
+    return new Sigmoid();
+}
+
 Sigmoid::Sigmoid(){}
 Sigmoid::~Sigmoid(){}
 

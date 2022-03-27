@@ -39,7 +39,8 @@ Neuron::Neuron(const Neuron &n1)
     activation = n1.activation;
 
     // TODO: Double check this. I think that the activation base is dynamically allocated, thus we need to deep copy this
-    activationBase = n1.activationBase;
+    // I think that this works now. Maybe remove the TODO? 
+    activationBase = n1.activationBase->clone();
 }
 
 void Neuron::setInput(double input)
@@ -210,6 +211,13 @@ void Neuron::update_weights_bias(double learning_weight, bool reset){
     if(reset)
         num_examples_dWeight = 0;
     
+}
+
+
+Neuron::~Neuron(){
+    //std::cout << "here | deleting 0x" << *(long long*)this->activationBase << std::endl; 
+    // TODO : There is a bug here and I cant delete the activation base.. weird. 
+    //delete this->activationBase; 
 }
 
 #endif

@@ -55,6 +55,12 @@ public:
     Neuron(const Neuron &n1);
 
     /**
+     * @brief Destroy the Neuron object`
+     * 
+     */
+    ~Neuron(); 
+
+    /**
      * @brief Set the input for a neuron
      * 
      * @param input 

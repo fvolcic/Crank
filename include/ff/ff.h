@@ -12,6 +12,8 @@
 #ifndef FF_H
 #define FF_H
 
+#define NN_DEBUG
+
 #include "activation.h"
 #include "learning_functions.h"
 #include "neuron.h"
@@ -39,7 +41,7 @@ public:
     * @param num_layers - The number of layers in the neural network
     * @param neuron_counts - The number of neurons in each layer of the neural network
     */
-   NeuralNetworkFF(int num_layers, std::vector<int> &neuron_counts);
+   NeuralNetworkFF(int num_layers, const std::vector<int> &neuron_counts);
 
    /**
     * @brief Construct the neural network using predefined weights and bias'
@@ -49,7 +51,7 @@ public:
     * @param weights - Weights of each neuron
     * @param bias - A bias term for each neuron in the neural network
     */
-   NeuralNetworkFF(int num_layers, std::vector<int> &neuron_counts, const std::vector<std::vector<std::vector<double>>> &weights, const std::vector<std::vector<double>> &bias);
+   NeuralNetworkFF(int num_layers, const std::vector<int> &neuron_counts, const std::vector<std::vector<std::vector<double>>> &weights, const std::vector<std::vector<double>> &bias);
 
    /**
     * @brief Construct a new Neural Network object
@@ -171,9 +173,11 @@ public:
                      ExpectIterator expect_iter, ExpectIterator expect_end,
                      TrainConfig *config = nullptr)
    {
+
+      auto default_train_config = TrainConfig(); 
       // If a nullptr is passed for the config, then train with the default parameters on the network
       if (!config)
-         config = new TrainConfig();
+         config = &default_train_config; 
 
       int max_examples = config->num_training_examples;
 
@@ -254,9 +258,12 @@ public:
                            ExpectIterator expect_iter, ExpectIterator expect_end, OutputCmp output_cmp,
                            TestConfig *config = nullptr)
    {
+
+      auto default_config = TestConfig(); 
+
       // TODO: Fix memory leak
       if (!config)
-         config = new TestConfig();
+         config = &default_config; 
 
       int max_examples = config->max_examples;
       if (config->max_examples == -1)

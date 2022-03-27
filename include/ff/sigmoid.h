@@ -53,6 +53,8 @@ public:
      */
     virtual std::string to_external_repr();
 
+    virtual ActivationBase * clone(); 
+
 private:
 };
 

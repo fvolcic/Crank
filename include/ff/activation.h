@@ -57,6 +57,8 @@ public:
      */
     virtual std::string to_external_repr() = 0; 
 
+    virtual ActivationBase * clone() = 0; 
+
 };
 
 
@@ -99,6 +101,10 @@ public:
 
     inline virtual std::string to_external_repr(){
         return "Linear";
+    }
+
+    inline virtual ActivationBase * clone(){
+        return new Linear(slope); 
     }
 
 private: 

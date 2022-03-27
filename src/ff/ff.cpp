@@ -68,12 +68,12 @@ std::vector<std::vector<std::vector<double>>> random_weight_helper(std::vector<i
     return output;
 }
 
-NeuralNetworkFF::NeuralNetworkFF(int num_layers, std::vector<int> &neuron_counts)
+NeuralNetworkFF::NeuralNetworkFF(int num_layers, const std::vector<int> &neuron_counts)
     : NeuralNetworkFF(num_layers, neuron_counts, random_weight_helper(neuron_counts), random_bias_helper(neuron_counts))
 {
 }
 
-NeuralNetworkFF::NeuralNetworkFF(int num_layers, std::vector<int> &neuron_counts, const std::vector<std::vector<std::vector<double>>> &weights, const std::vector<std::vector<double>> &bias)
+NeuralNetworkFF::NeuralNetworkFF(int num_layers, const std::vector<int> &neuron_counts, const std::vector<std::vector<std::vector<double>>> &weights, const std::vector<std::vector<double>> &bias)
 {
     //Initializes first layer of Neural Network
     neurons.resize(num_layers);
