@@ -169,8 +169,8 @@ int main()
     dataset = read_dataset(); // Read MNIST from memory
     
     // Step 1: Create the neural network with random weights and bias'
-    int num_layers = 2;
-    std::vector<int> neuron_counts = {784, 10};
+    int num_layers = 3;
+    std::vector<int> neuron_counts = {784, 100, 10};
     NeuralNetworkFF net(num_layers, neuron_counts);
 
     // Step 2: Create the examples and expectation iterators
@@ -191,8 +191,8 @@ int main()
 
     // Step 3: Set up the training configuration
     NeuralNetworkFF::TrainConfig train_config;
-    train_config.batch_size = 10;
-    train_config.learning_function = new ConstantLearningFunction(0.05);
+    train_config.batch_size = 20;
+    train_config.learning_function = new ConstantLearningFunction(0.1);
     train_config.verbose = true;
     train_config.verbose_count = 5000;
     train_config.num_training_examples = 60000;
@@ -201,9 +201,8 @@ int main()
     images = &dataset->training_images;
     labels = &dataset->training_labels; 
     example_index = 0;  
-    std::cout << "Training Run 1 | Learnings Rate 0.35" << std::endl; 
+    std::cout << "Training Run 1 | Learnings Rate 0.1" << std::endl; 
     net.train(examples, examples_end, expect, expect_end, &train_config);
-
     std::cout << "Training complete!\n"
               << std::endl;
 
